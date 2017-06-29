@@ -29,11 +29,11 @@ public class MainActivity extends AppCompatActivity {
         mDatas.add(info3);
 
         mAdPlayView = (AdPlayView) findViewById(R.id.game_banner);
-        mAdPlayView.setInfoList(mDatas);
-        mAdPlayView.setInterval(2000);
-        mAdPlayView.setBackgroundColor(Color.parseColor("#000000"));
-        mAdPlayView.setImageLoadType(ImageLoaderManager.TYPE_FRESCO);
-        mAdPlayView.setPageTransfromer(TransfromerManager.TRANSFORMER_ZOOM_OUT_PAGE);
-        mAdPlayView.setUp();
+        mAdPlayView.setInfoList(mDatas);    // 设置数据源，传入数据格式为List<AdPageInfo>
+        mAdPlayView.setInterval(2000);      // 设置间隔时间，单位ms
+        mAdPlayView.setBackgroundColor(Color.parseColor("#000000"));    // 设置图片背景颜色
+        mAdPlayView.setImageLoadType(ImageLoaderManager.TYPE_FRESCO);   // 设置图片加载方式，默认Fresco
+        mAdPlayView.setPageTransfromer(TransfromerManager.TRANSFORMER_ZOOM_OUT_PAGE);   // 设置图片切换动画
+        mAdPlayView.setUp();    // 装载AdPlayView
     }
 }

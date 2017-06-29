@@ -6,6 +6,21 @@ AdPlayBanner是一个Android平台的轮播图插件，主要用以自动或者�
 
 ### 1.添加依赖 ###
 
+首先，在项目级别的`build.gradle`文件添加依赖：
+
+    allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+
+然后，在模块目录下的`build.gradle`文件添加依赖：
+
+    dependencies {
+		compile 'com.github.ryanlijianchang:AdPlayBanner:v0.1'
+	}
+
 ### 2.在布局文件中添加控件 ###
 
 高度可以根据自己的需要设置，控件需要在一个布局（可以是LinearLayout，RelativeLayout，FrameLayout等）之内。
