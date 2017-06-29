@@ -2,7 +2,7 @@
 
 AdPlayBanner是一个Android平台的轮播图插件，主要用以自动或者手动地播放轮播图，提供了Fresco、Picasso、Glide等图片加载方式供用户使用，以及多种图片切换动画，设置轮播时间等功能，实现了傻瓜式的控价使用方式。废话不多说，先上效果图：
 
-![](http://onq81n53u.bkt.clouddn.com/ezgif.com-video-to-gif.gif)
+![](http://onq81n53u.bkt.clouddn.com/asdfdfe.gif)
 
 ## 使用方法 ##
 
