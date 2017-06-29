@@ -1,0 +1,16 @@
+.gradle/
+.idea/
+.tags
+captures/
+reports/
+build/
+reports/
+gradle/
+gradlew
+gradlew.bat
+local.properties
+.DS_Store
+.externalNativeBuild
+*iml
+*.patch
+
