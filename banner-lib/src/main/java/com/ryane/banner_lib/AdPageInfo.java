@@ -19,5 +19,19 @@ public class AdPageInfo {
         this.order = order;
     }
 
+    public String getTitle() {
+        return title;
+    }
 
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public String getClickUlr() {
+        return clickUlr;
+    }
+
+    public int getOrder() {
+        return order;
+    }
 }

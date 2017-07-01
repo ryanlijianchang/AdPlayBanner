@@ -3,16 +3,21 @@ package com.ryane.banner_lib;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.animation.LinearInterpolator;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
 import com.ryane.banner_lib.scroller.AutoPlayScroller;
+import com.ryane.banner_lib.view.PointView;
+import com.ryane.banner_lib.view.TitleView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,12 +31,20 @@ import java.util.List;
 
 public class ScrollerPager extends ViewPager {
     private RelativeLayout mContainer;
+    private TitleView mTitleView;
+    private LinearLayout mIndicator;
     private List<AdPageInfo> mInfos;
     private Handler mUIHandler;
+    private PointView[] mPointViews = null;
+
+    private final static int DOT_SELECTED_COLOR = 0xFFF2F2F2;
+    private final static int DOT_NORMAL_COLOR = 0xFF888888;
 
     public static int INTERVAL = 3000;  // 默认间隔时间
 
     private int mSelectedIndex = 0;     // 当前下标
+
+    private boolean mHasIndicator = false;  //是否配置Indicator
 
     public ScrollerPager(Context context) {
         this(context, null);
@@ -42,10 +55,13 @@ public class ScrollerPager extends ViewPager {
         mUIHandler = new Handler(Looper.getMainLooper());
     }
 
-    public ScrollerPager(RelativeLayout mContainer, List<AdPageInfo> infos) {
+    public ScrollerPager(RelativeLayout mContainer, TitleView mTitleView, List<AdPageInfo> infos, boolean mHasIndicator) {
         super(mContainer.getContext());
 
         this.mContainer = mContainer;
+        this.mTitleView = mTitleView;
+        this.mHasIndicator = mHasIndicator;
+
         if (null != infos) {
             this.mInfos = infos;
         } else {
@@ -60,13 +76,62 @@ public class ScrollerPager extends ViewPager {
      */
     private void init() {
         mUIHandler = new Handler(Looper.getMainLooper());
+
+        // 初始化Indicator
+        initIndicator();
+
+        // 初始化切换时间
+        initScrollTime(new AutoPlayScroller(getContext(), new LinearInterpolator()));
+
+        // 初始化viewpager start
         ScrollerPagerAdapter adapter = new ScrollerPagerAdapter(getContext(), mInfos);
         setAdapter(adapter);
         setOnPageChangeListener(mOnPageChangeListener);
-
-        initScrollTime( new AutoPlayScroller(getContext(), new LinearInterpolator()));
+        // 初始化viewpager end
     }
 
+    private void initIndicator() {
+        if (mHasIndicator) {
+            mIndicator = new LinearLayout(getContext());
+            mIndicator.setOrientation(LinearLayout.HORIZONTAL);
+            mIndicator.setGravity(Gravity.CENTER);
+
+            mIndicator.removeAllViews();
+
+            mPointViews = new PointView[mInfos.size()];
+
+            float pointSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+
+            for (int i = 0; i < mInfos.size(); i++) {
+                PointView pointView;
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) pointSize, (int) pointSize);
+                layoutParams.leftMargin = (int) (pointSize / 2);
+                layoutParams.rightMargin = (int) (pointSize / 2);
+                if (i == mSelectedIndex) {
+                    pointView = new PointView(getContext(), pointSize, ContextCompat.getColor(getContext(), R.color.point_selected_color));
+                } else {
+                    pointView = new PointView(getContext(), pointSize, ContextCompat.getColor(getContext(), R.color.point_normal_color));
+                }
+                if (i == 0) {
+                    layoutParams.leftMargin = 0;
+                }
+                if (i == mInfos.size() - 1) {
+                    layoutParams.rightMargin = 0;
+                }
+                layoutParams.topMargin = (int) pointSize;
+                layoutParams.bottomMargin = (int) pointSize;
+                mPointViews[i] = pointView;
+                mIndicator.addView(mPointViews[i], layoutParams);
+            }
+        }
+    }
+
+    /**
+     * 图片A开始滑动到图片B之间的时间
+     * 主要是保证两张图片之间的切换动画有足够的时间显示
+     *
+     * @param mScroller
+     */
     private void initScrollTime(Scroller mScroller) {
         try {
             Field mField = ViewPager.class.getDeclaredField("mScroller");
@@ -106,6 +171,19 @@ public class ScrollerPager extends ViewPager {
         public void onPageSelected(int position) {
             Log.d("ScrollerPager", "position = " + position);
             mSelectedIndex = position;
+            int rightPos = position % mInfos.size();
+            if (mTitleView != null) {
+                mTitleView.setTitle(mInfos.get(rightPos).getTitle());
+            }
+
+            if (mHasIndicator == true && mPointViews != null && mPointViews.length > 0) {
+                mPointViews[rightPos].setmColor(DOT_SELECTED_COLOR);
+                for (int i = 0; i < mPointViews.length; i++) {
+                    if (rightPos != i) {
+                        mPointViews[i].setmColor(DOT_NORMAL_COLOR);
+                    }
+                }
+            }
         }
 
         @Override
@@ -149,6 +227,13 @@ public class ScrollerPager extends ViewPager {
         return halfValue - position;
     }
 
+    public void setmTitleView(TitleView mTitleView) {
+        this.mTitleView = mTitleView;
+    }
+
+    public void setHasIndicator(boolean hasIndicator) {
+        this.mHasIndicator = hasIndicator;
+    }
 
     /**
      * 设置切换动画
@@ -168,16 +253,9 @@ public class ScrollerPager extends ViewPager {
             stopAdvertPlay();
             mContainer.setVisibility(GONE);
         } else {
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            mContainer.addView(this, layoutParams);
-
-
-/*            layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,100);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            ImageView imageView = new ImageView(getContext());
-            imageView.setBackgroundResource(R.drawable.photo2);
-            mContainer.addView(imageView, layoutParams);*/
+            addScrollerPager(); // 把ScrollerPager装载到外布局中
+            addTitleView();     // 把TitleView装载到外布局中
+            addIndicatorView(); // 把IndicatorView装载到外布局中
 
             if (mInfos.size() == 1) {
                 stopAdvertPlay();
@@ -187,6 +265,53 @@ public class ScrollerPager extends ViewPager {
             mContainer.setVisibility(VISIBLE);
             // 设置初始化的位置
             setCurrentItem(getInitPosition());
+        }
+    }
+
+    /**
+     * 装载ScrollerPager
+     */
+    private void addScrollerPager() {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        mContainer.addView(this, layoutParams);
+    }
+
+    /**
+     * 装载TitleView
+     */
+    private void addTitleView() {
+        if (mTitleView != null) {
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            switch (mTitleView.gravity) {
+                default:
+                case TitleView.ALIGN_PARENT_BOTTOM:
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    break;
+                case TitleView.ALIGN_PARENT_TOP:
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                    break;
+                case TitleView.CENTER_IN_PARENT:
+                    layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                    break;
+            }
+            layoutParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mTitleView.marginTop, getContext().getResources().getDisplayMetrics());
+            layoutParams.bottomMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mTitleView.marginBottom, getContext().getResources().getDisplayMetrics());
+            layoutParams.leftMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mTitleView.marginLeft, getContext().getResources().getDisplayMetrics());
+            layoutParams.rightMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mTitleView.marginRight, getContext().getResources().getDisplayMetrics());
+            mContainer.addView(mTitleView, layoutParams);
+        }
+    }
+
+    /**
+     * 装载IndicatorView
+     */
+    private void addIndicatorView() {
+        if (mHasIndicator == true && mIndicator != null) {
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            layoutParams.bottomMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics());
+            mContainer.addView(mIndicator, layoutParams);
         }
     }
 

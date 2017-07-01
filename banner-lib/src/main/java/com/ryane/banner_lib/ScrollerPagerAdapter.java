@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ryane.banner_lib.laoder.ImageLoaderManager;
+import com.ryane.banner_lib.view.TitleView;
 
 import java.util.List;
 

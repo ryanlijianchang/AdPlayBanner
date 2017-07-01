@@ -1,8 +1,6 @@
 package com.ryane.banner_lib;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
@@ -11,6 +9,7 @@ import com.ryane.banner_lib.transformer.DepthPageTransformer;
 import com.ryane.banner_lib.transformer.RotateDownTransformer;
 import com.ryane.banner_lib.transformer.TransfromerManager;
 import com.ryane.banner_lib.transformer.ZoomOutPageTransformer;
+import com.ryane.banner_lib.view.TitleView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,37 +20,56 @@ import java.util.List;
  * Email: lijianchang@yy.com
  */
 
-public class AdPlayView extends RelativeLayout {
+public class AdPlayBanner extends RelativeLayout {
     private List<AdPageInfo> mInfos;
     private ScrollerPager mScrollerPager;
+    private TitleView mTitleView;
+    private boolean mHasIndicator = false;
 
-    public AdPlayView(Context context) {
+    public AdPlayBanner(Context context) {
         this(context, null);
     }
 
-    public AdPlayView(Context context, AttributeSet attrs) {
+    public AdPlayBanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public AdPlayView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public AdPlayBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public AdPlayView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    /**
+     * 初始化标题视图
+     */
+    public AdPlayBanner addTitleView(TitleView mTitleView) {
+        this.mTitleView = mTitleView;
+        if (mScrollerPager != null) {
+            mScrollerPager.setmTitleView(mTitleView);
+        }
+        return this;
     }
 
-    public void setInfoList(List<AdPageInfo> pageInfos) {
+    public AdPlayBanner hasIndicator(boolean mHasIndicator) {
+        this.mHasIndicator = mHasIndicator;
+        if (mScrollerPager != null) {
+            mScrollerPager.setHasIndicator(mHasIndicator);
+        }
+        return this;
+    }
+
+    /**
+     * 设置数据源
+     *
+     * @param pageInfos
+     */
+    public AdPlayBanner setInfoList(List<AdPageInfo> pageInfos) {
         if (null != pageInfos)
             this.mInfos = pageInfos;
         else
             this.mInfos = new ArrayList<>();
-        mScrollerPager = new ScrollerPager(this, mInfos);
-    }
-
-    public void setUp() {
-        mScrollerPager.show();
+        mScrollerPager = new ScrollerPager(this, mTitleView, mInfos, mHasIndicator);
+        return this;
     }
 
     /**
@@ -59,23 +77,27 @@ public class AdPlayView extends RelativeLayout {
      *
      * @param interval
      */
-    public void setInterval(int interval) {
+    public AdPlayBanner setInterval(int interval) {
         ScrollerPager.INTERVAL = interval;
+        return this;
     }
 
     /**
      * 设置图片加载方式
+     *
      * @param type
      */
-    public void setImageLoadType(int type) {
+    public AdPlayBanner setImageLoadType(int type) {
         ImageLoaderManager.getInstance().setImageLoaderType(type);
+        return this;
     }
 
     /**
      * 设置切换动画
+     *
      * @param transfromer
      */
-    public void setPageTransfromer(int transfromer){
+    public AdPlayBanner setPageTransfromer(int transfromer) {
         switch (transfromer) {
             case TransfromerManager.TRANSFORMER_DEPTH_PAGE:
                 mScrollerPager.setPageTransfromer(new DepthPageTransformer());
@@ -91,8 +113,14 @@ public class AdPlayView extends RelativeLayout {
                 mScrollerPager.setPageTransfromer(null);
                 break;
         }
+        return this;
     }
 
-
+    /**
+     * 装载AdPlayBanner
+     */
+    public void setUp() {
+        mScrollerPager.show();
+    }
 
 }

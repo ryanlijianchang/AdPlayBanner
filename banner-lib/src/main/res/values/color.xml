@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="grey">#55000000</color>
+    <color name="green">#5544ff18</color>
+    <color name="point_selected_color">#ffffff</color>
+    <color name="point_normal_color">#ff888888</color>
+
+</resources>
