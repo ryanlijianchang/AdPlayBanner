@@ -31,7 +31,7 @@ public class ScrollerPagerAdapter extends PagerAdapter {
     public int getCount() {
         if (null != mInfos)
             // 当只有一张图片的时候，不可滑动
-            if (mInfos.size() == 1){
+            if (mInfos.size() == 1) {
                 return 1;
             } else {
                 // 否则循环播放滑动
@@ -42,9 +42,10 @@ public class ScrollerPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         if (mInfos != null && mInfos.size() > 0) {
-            return ImageLoaderManager.getInstance().initPageView(container, mContext, mInfos.get(position % mInfos.size()), position);
+            final Object obj = ImageLoaderManager.getInstance().initPageView(container, mContext, mInfos.get(position % mInfos.size()), position % mInfos.size());
+            return obj;
         } else {
             return null;
         }
@@ -59,4 +60,9 @@ public class ScrollerPagerAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
+
+    public void setmOnPageClickListener(AdPlayBanner.OnPageClickListener l) {
+       ImageLoaderManager.getInstance().setmOnPageClickListener(l);
+    }
+
 }

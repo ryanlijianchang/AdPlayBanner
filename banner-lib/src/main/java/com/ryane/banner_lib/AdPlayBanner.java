@@ -1,14 +1,14 @@
 package com.ryane.banner_lib;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.ryane.banner_lib.indicator.IndicatorManager;
 import com.ryane.banner_lib.laoder.ImageLoaderManager;
-import com.ryane.banner_lib.transformer.DepthPageTransformer;
-import com.ryane.banner_lib.transformer.RotateDownTransformer;
-import com.ryane.banner_lib.transformer.TransfromerManager;
-import com.ryane.banner_lib.transformer.ZoomOutPageTransformer;
+import com.ryane.banner_lib.sort.QuickSort;
+import com.ryane.banner_lib.view.NumberView;
 import com.ryane.banner_lib.view.TitleView;
 
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ public class AdPlayBanner extends RelativeLayout {
     private List<AdPageInfo> mInfos;
     private ScrollerPager mScrollerPager;
     private TitleView mTitleView;
-    private boolean mHasIndicator = false;
 
     public AdPlayBanner(Context context) {
         this(context, null);
@@ -50,11 +49,20 @@ public class AdPlayBanner extends RelativeLayout {
         return this;
     }
 
-    public AdPlayBanner hasIndicator(boolean mHasIndicator) {
-        this.mHasIndicator = mHasIndicator;
-        if (mScrollerPager != null) {
-            mScrollerPager.setHasIndicator(mHasIndicator);
-        }
+    public AdPlayBanner setBannerBackground(int color) {
+        setBackgroundColor(color);
+        return this;
+    }
+
+    /**
+     * 设置指示器类型
+     * @param type IndicatorManager.NONE_INDICATOR : 不设置indicator
+     *             IndicatorManager.POINT_INDICATOR : 点型indicator
+     *             IndicatorManager.NUMBER_INDICATOR : 数字型indicator
+     * @return
+     */
+    public AdPlayBanner setIndicatorType(int type) {
+        IndicatorManager.setIndicatorType(type);
         return this;
     }
 
@@ -63,12 +71,11 @@ public class AdPlayBanner extends RelativeLayout {
      *
      * @param pageInfos
      */
-    public AdPlayBanner setInfoList(List<AdPageInfo> pageInfos) {
+    public AdPlayBanner setInfoList(ArrayList<AdPageInfo> pageInfos) {
         if (null != pageInfos)
-            this.mInfos = pageInfos;
+            this.mInfos = QuickSort.quickSort(pageInfos, 0, pageInfos.size() - 1);
         else
             this.mInfos = new ArrayList<>();
-        mScrollerPager = new ScrollerPager(this, mTitleView, mInfos, mHasIndicator);
         return this;
     }
 
@@ -78,7 +85,7 @@ public class AdPlayBanner extends RelativeLayout {
      * @param interval
      */
     public AdPlayBanner setInterval(int interval) {
-        ScrollerPager.INTERVAL = interval;
+        ScrollerPager.mInterval = interval;
         return this;
     }
 
@@ -94,25 +101,54 @@ public class AdPlayBanner extends RelativeLayout {
 
     /**
      * 设置切换动画
-     *
-     * @param transfromer
+     * 如果不设置动画，设置为null
+     * @param transformer
      */
-    public AdPlayBanner setPageTransfromer(int transfromer) {
-        switch (transfromer) {
-            case TransfromerManager.TRANSFORMER_DEPTH_PAGE:
-                mScrollerPager.setPageTransfromer(new DepthPageTransformer());
-                break;
-            case TransfromerManager.TRANSFORMER_ZOOM_OUT_PAGE:
-                mScrollerPager.setPageTransfromer(new ZoomOutPageTransformer());
-                break;
-            case TransfromerManager.TRANSFORMER_ROTATE_DOWN:
-                mScrollerPager.setPageTransfromer(new RotateDownTransformer());
-                break;
-            default:
-            case TransfromerManager.TRANSFORMER_DEFAULT:
-                mScrollerPager.setPageTransfromer(null);
-                break;
+    public AdPlayBanner setPageTransfromer(ViewPager.PageTransformer transformer) {
+        if (mScrollerPager != null) {
+            mScrollerPager.setPageTransformer(true, transformer);
+        } else {
+            mScrollerPager.mTransformer = transformer;
         }
+        return this;
+    }
+
+
+    /**
+     * 设置数字页码的颜色
+     * @param normalColor   数字正常背景颜色
+     * @param selectedColor 数字选中背景颜色
+     * @param numberColor   数字字体颜色
+     */
+    public AdPlayBanner setNumberViewColor(int normalColor, int selectedColor, int numberColor) {
+        if (mScrollerPager != null) {
+            mScrollerPager.setNumberViewColor(normalColor, selectedColor, numberColor);
+        } else {
+            NumberView.mNumberViewNormalColor = normalColor;
+            NumberView.mNumberViewSelectedColor = selectedColor;
+            NumberView.mNumberTextColor = numberColor;
+        }
+        return this;
+    }
+
+    /**
+     * 设置事件点击监听器
+     * @param l
+     * @return
+     */
+    public AdPlayBanner setOnPageClickListener(OnPageClickListener l) {
+        ImageLoaderManager.mOnPageClickListener = l;
+        return this;
+    }
+
+    /**
+     * 设置是否自动播放
+     * 默认为true 自动播放
+     * @param autoPlay
+     * @return
+     */
+    public AdPlayBanner setAutoPlay(boolean autoPlay) {
+        ScrollerPager.mAutoPlay = autoPlay;
         return this;
     }
 
@@ -120,7 +156,12 @@ public class AdPlayBanner extends RelativeLayout {
      * 装载AdPlayBanner
      */
     public void setUp() {
+        mScrollerPager = new ScrollerPager(this, mTitleView, mInfos);
         mScrollerPager.show();
+    }
+
+    public interface OnPageClickListener {
+        void onPageClick(AdPageInfo info, int postion);
     }
 
 }

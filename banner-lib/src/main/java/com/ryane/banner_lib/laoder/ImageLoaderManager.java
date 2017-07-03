@@ -4,12 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ryane.banner_lib.AdPageInfo;
+import com.ryane.banner_lib.AdPlayBanner;
+import com.ryane.banner_lib.ScrollerPagerAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,6 +26,8 @@ import java.util.ArrayList;
 
 public class ImageLoaderManager {
     private int mImageLoaderType = 0;  // 图片加载方式，默认0
+
+    public static AdPlayBanner.OnPageClickListener mOnPageClickListener = null;
 
     public static final int TYPE_FRESCO = 1;    // fresco加载方式
     public static final int TYPE_GLIDE = 2;     // glide加载方式
@@ -50,14 +56,16 @@ public class ImageLoaderManager {
         mImageLoaderType = type;
     }
 
-    public Object initPageView(ViewGroup container, Context context, AdPageInfo info, int position) {
-        Log.d("ImageLoaderManager", "position = " + position + "; mViewCaches.size() = " + mViewCaches.size() + "; container.size() = " + container.getChildCount());
+    public Object initPageView(ViewGroup container, Context context, final AdPageInfo info, final int position) {
+        Log.d("smzq", "initpageView");
+        Log.d("ImageLoaderManager", "position = " + position + "; mViewCaches.size() = " + mViewCaches.size() + "; container.size() = " + container.getChildCount()
+                + "; AdPageInfo = " + info.toString());
 
         Uri uri = Uri.parse(info.picUrl);
         switch (mImageLoaderType) {
             default:
             case TYPE_FRESCO:
-                SimpleDraweeView mFrescoView;
+                final SimpleDraweeView mFrescoView;
                 if (mViewCaches.isEmpty()) {
                     mFrescoView = new SimpleDraweeView(context);
                     mFrescoView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -67,9 +75,17 @@ public class ImageLoaderManager {
                 }
                 mFrescoView.setImageURI(uri);
                 container.addView(mFrescoView);
+                mFrescoView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mOnPageClickListener != null) {
+                            mOnPageClickListener.onPageClick(info, position);
+                        }
+                    }
+                });
                 return mFrescoView;
             case TYPE_GLIDE:
-                ImageView mGlideView;
+                final ImageView mGlideView;
                 if (mViewCaches.isEmpty()) {
                     mGlideView = new ImageView(context);
                     mGlideView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -79,9 +95,17 @@ public class ImageLoaderManager {
                 }
                 Glide.with((AppCompatActivity) context).load(info.picUrl).into(mGlideView);
                 container.addView(mGlideView);
+                mGlideView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mOnPageClickListener != null) {
+                            mOnPageClickListener.onPageClick(info, position);
+                        }
+                    }
+                });
                 return mGlideView;
             case TYPE_PICASSO:
-                ImageView mPicassoView;
+                final ImageView mPicassoView;
                 if (mViewCaches.isEmpty()) {
                     mPicassoView = new ImageView(context);
                     mPicassoView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -90,12 +114,21 @@ public class ImageLoaderManager {
                     mPicassoView = (ImageView) mViewCaches.remove(0);
                 }
                 Picasso.with(context).load(info.picUrl).into(mPicassoView);
+                mPicassoView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mOnPageClickListener != null) {
+                            mOnPageClickListener.onPageClick(info, position);
+                        }
+                    }
+                });
                 container.addView(mPicassoView);
                 return mPicassoView;
         }
     }
 
     public void destroyPageView(ViewGroup container, Object object) {
+        Log.d("smzq", "destroyPageView");
         switch (mImageLoaderType) {
             default:
             case TYPE_FRESCO:
@@ -116,8 +149,9 @@ public class ImageLoaderManager {
                 mViewCaches.add(mPicassoView);
                 break;
         }
-
-
     }
 
+    public void setmOnPageClickListener(AdPlayBanner.OnPageClickListener l) {
+        mOnPageClickListener = l;
+    }
 }
