@@ -1,5 +1,9 @@
 package com.ryane.banner_lib.indicator;
 
+import com.ryane.banner_lib.AdPlayBanner;
+
+import static com.ryane.banner_lib.AdPlayBanner.IndicatorType.NONE_INDICATOR;
+
 /**
  * Creator: lijianchang
  * Create Time: 2017/7/1.
@@ -7,17 +11,26 @@ package com.ryane.banner_lib.indicator;
  */
 
 public class IndicatorManager {
-    public static final int NONE_INDICATOR = 0;     // 没有indicator
-    public static final int POINT_INDICATOR = 1;    // 点型indicator
-    public static final int NUMBER_INDICATOR = 2;   // 数字型indicator
 
-    private static int mIndicatorType = NONE_INDICATOR;
 
-    public static void setIndicatorType(int indicatorType) {
+    private static class SingletonHolder {
+        private static final IndicatorManager INSTANCE = new IndicatorManager();
+    }
+
+    private IndicatorManager() {
+    }
+
+    public static final IndicatorManager getInstance() {
+        return IndicatorManager.SingletonHolder.INSTANCE;
+    }
+
+    private AdPlayBanner.IndicatorType mIndicatorType = NONE_INDICATOR;
+
+    public void setIndicatorType(AdPlayBanner.IndicatorType indicatorType) {
         mIndicatorType = indicatorType;
     }
 
-    public static int getIndicatorType() {
+    public AdPlayBanner.IndicatorType getIndicatorType() {
         return mIndicatorType;
     }
 }

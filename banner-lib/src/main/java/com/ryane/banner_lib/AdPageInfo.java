@@ -38,6 +38,22 @@ public class AdPageInfo implements Parcelable {
         return order;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    public void setClickUlr(String clickUlr) {
+        this.clickUlr = clickUlr;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
     @Override
     public String toString() {
         return "AdPageInfo{" +

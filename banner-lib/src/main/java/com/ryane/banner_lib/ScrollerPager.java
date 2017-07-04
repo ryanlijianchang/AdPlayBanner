@@ -10,7 +10,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,6 +24,9 @@ import com.ryane.banner_lib.view.TitleView;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ryane.banner_lib.AdPlayBanner.IndicatorType.NUMBER_INDICATOR;
+import static com.ryane.banner_lib.AdPlayBanner.IndicatorType.POINT_INDICATOR;
 
 /**
  * Creator: lijianchang
@@ -48,7 +50,7 @@ public class ScrollerPager extends ViewPager {
 
     public static ViewPager.PageTransformer mTransformer = null;
     public static boolean mAutoPlay = true;    // 是否自动播放
-    public static int mInterval = 3000;  // 默认间隔时间
+    public static int mInterval = 2000;  // 默认间隔时间
 
     private int mSelectedIndex = 0;     // 当前下标
 
@@ -102,7 +104,7 @@ public class ScrollerPager extends ViewPager {
      * 初始化Indicator
      */
     private void initIndicator() {
-        if (IndicatorManager.getIndicatorType() == IndicatorManager.POINT_INDICATOR) {
+        if (IndicatorManager.getInstance().getIndicatorType() == POINT_INDICATOR) {
             mIndicator = new LinearLayout(getContext());
             mIndicator.setOrientation(LinearLayout.HORIZONTAL);
             mIndicator.setGravity(Gravity.CENTER);
@@ -141,7 +143,7 @@ public class ScrollerPager extends ViewPager {
      * 初始化数字页码
      */
     private void initPageNumber() {
-        if (IndicatorManager.getIndicatorType() == IndicatorManager.NUMBER_INDICATOR) {
+        if (IndicatorManager.getInstance().getIndicatorType() == NUMBER_INDICATOR) {
             mPageNumberLayout = new LinearLayout(getContext());
             mPageNumberLayout.setOrientation(LinearLayout.HORIZONTAL);
             mPageNumberLayout.setGravity(Gravity.CENTER);
@@ -216,7 +218,7 @@ public class ScrollerPager extends ViewPager {
                 mTitleView.setTitle(mInfos.get(rightPos).getTitle());
             }
 
-            if (IndicatorManager.getIndicatorType() == IndicatorManager.POINT_INDICATOR && mPointViews != null && mPointViews.length > 0) {
+            if (IndicatorManager.getInstance().getIndicatorType() == POINT_INDICATOR && mPointViews != null && mPointViews.length > 0) {
                 mPointViews[rightPos].setmColor(mPointViewSelectedColor);
                 for (int i = 0; i < mPointViews.length; i++) {
                     if (rightPos != i) {
@@ -225,7 +227,7 @@ public class ScrollerPager extends ViewPager {
                 }
             }
 
-            if (IndicatorManager.getIndicatorType() == IndicatorManager.NUMBER_INDICATOR && mPageNumberLayout != null && mNumberViews.length > 0) {
+            if (IndicatorManager.getInstance().getIndicatorType() == NUMBER_INDICATOR && mPageNumberLayout != null && mNumberViews.length > 0) {
                 mNumberViews[rightPos].setNumberViewColor(NumberView.mNumberViewSelectedColor);
                 for (int i = 0; i < mNumberViews.length; i++) {
                     if (rightPos != i) {
@@ -334,8 +336,9 @@ public class ScrollerPager extends ViewPager {
      * 装载ScrollerPager
      */
     private void addScrollerPager() {
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        ViewPager.LayoutParams layoutParams = new ViewPager.LayoutParams();
+        layoutParams.width = ViewPager.LayoutParams.MATCH_PARENT;
+        layoutParams.height = ViewPager.LayoutParams.MATCH_PARENT;
         mContainer.addView(this, layoutParams);
     }
 
@@ -343,7 +346,7 @@ public class ScrollerPager extends ViewPager {
      * 装载PageNumberView
      */
     private void addPageNumberView() {
-        if (IndicatorManager.getIndicatorType() == IndicatorManager.NUMBER_INDICATOR && mPageNumberLayout != null) {
+        if (IndicatorManager.getInstance().getIndicatorType() == NUMBER_INDICATOR && mPageNumberLayout != null) {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             layoutParams.bottomMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics());
@@ -355,7 +358,7 @@ public class ScrollerPager extends ViewPager {
      * 装载IndicatorView
      */
     private void addIndicatorView() {
-        if (IndicatorManager.getIndicatorType() == IndicatorManager.POINT_INDICATOR && mIndicator != null) {
+        if (IndicatorManager.getInstance().getIndicatorType() == POINT_INDICATOR && mIndicator != null) {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             layoutParams.bottomMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getContext().getResources().getDisplayMetrics());
@@ -371,13 +374,13 @@ public class ScrollerPager extends ViewPager {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             switch (mTitleView.gravity) {
                 default:
-                case TitleView.ALIGN_PARENT_BOTTOM:
+                case PARENT_BOTTOM:
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                     break;
-                case TitleView.ALIGN_PARENT_TOP:
+                case PARENT_TOP:
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
                     break;
-                case TitleView.CENTER_IN_PARENT:
+                case PARENT_CENTER:
                     layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
                     break;
             }

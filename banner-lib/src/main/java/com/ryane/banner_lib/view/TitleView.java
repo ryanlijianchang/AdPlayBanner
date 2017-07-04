@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.ryane.banner_lib.R;
 
+import static com.ryane.banner_lib.view.TitleView.Gravity.PARENT_BOTTOM;
+
 /**
  * Creator: lijianchang
  * Create Time: 2017/6/30.
@@ -23,20 +25,31 @@ public class TitleView extends RelativeLayout {
     private TextView mTitle;
     private RelativeLayout mContainer;
 
-    public static final int ALIGN_PARENT_TOP = 0;
-    public static final int ALIGN_PARENT_BOTTOM = 1;
-    public static final int CENTER_IN_PARENT = 2;
+    public enum Gravity {
+        PARENT_TOP (0),
+        PARENT_BOTTOM (1),
+        PARENT_CENTER (2);
+        Gravity(int ni) {
+            nativeInt = ni;
+        }
+        final int nativeInt;
+    }
 
-    public int gravity = 1;    // 在父布局中的位置
+    public Gravity gravity = PARENT_BOTTOM;    // 在父布局中的位置
     public int marginTop, marginBottom, marginLeft, marginRight = 0;
 
     public TitleView(Context context) {
         this(context, null);
     }
 
+    /**
+     *  获取一个默认的TitleView
+     * @param context
+     * @return
+     */
     public static TitleView getDefaultTitleView(Context context){
         TitleView titleView = new TitleView(context);
-        titleView.setPosition(ALIGN_PARENT_BOTTOM)
+        titleView.setPosition(PARENT_BOTTOM)
                 .setTitleMargin(0, 0, 0, 20)
                 .setTitlePadding(2,5,2,5)
                 .setViewBackground(ContextCompat.getColor(context, R.color.grey))
@@ -79,6 +92,11 @@ public class TitleView extends RelativeLayout {
         return this;
     }
 
+    /**
+     * 设置字体颜色
+     * @param color
+     * @return
+     */
     public TitleView setTitleColor(int color) {
         if (mTitle != null) {
             mTitle.setTextColor(color);
@@ -86,12 +104,22 @@ public class TitleView extends RelativeLayout {
         return this;
     }
 
+    /**
+     * 设置标题背景
+     * @param color
+     * @return
+     */
     public TitleView setViewBackground(int color){
         mContainer.setBackgroundColor(color);
         return this;
     }
 
-    public TitleView setPosition(int gravity) {
+    /**
+     * 设置标题在Banner的位置
+     * @param gravity
+     * @return
+     */
+    public TitleView setPosition(Gravity gravity) {
         this.gravity = gravity;
         return this;
     }
@@ -104,6 +132,14 @@ public class TitleView extends RelativeLayout {
         return this;
     }
 
+    /**
+     * 设置标题的padding值
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     * @return
+     */
     public TitleView setTitlePadding(int left, int top, int right, int bottom) {
         if (mTitle != null) {
             mTitle.setPadding(change2Dp(left), change2Dp(top), change2Dp(right), change2Dp(bottom));

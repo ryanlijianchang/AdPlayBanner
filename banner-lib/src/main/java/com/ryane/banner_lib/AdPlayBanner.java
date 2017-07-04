@@ -56,13 +56,11 @@ public class AdPlayBanner extends RelativeLayout {
 
     /**
      * 设置指示器类型
-     * @param type IndicatorManager.NONE_INDICATOR : 不设置indicator
-     *             IndicatorManager.POINT_INDICATOR : 点型indicator
-     *             IndicatorManager.NUMBER_INDICATOR : 数字型indicator
+     * @param type
      * @return
      */
-    public AdPlayBanner setIndicatorType(int type) {
-        IndicatorManager.setIndicatorType(type);
+    public AdPlayBanner setIndicatorType(IndicatorType type) {
+        IndicatorManager.getInstance().setIndicatorType(type);
         return this;
     }
 
@@ -94,7 +92,7 @@ public class AdPlayBanner extends RelativeLayout {
      *
      * @param type
      */
-    public AdPlayBanner setImageLoadType(int type) {
+    public AdPlayBanner setImageLoadType(ImageLoaderType type) {
         ImageLoaderManager.getInstance().setImageLoaderType(type);
         return this;
     }
@@ -142,6 +140,16 @@ public class AdPlayBanner extends RelativeLayout {
     }
 
     /**
+     * 设置图片显示方式
+     * @param scaleType
+     * @return
+     */
+    public AdPlayBanner setImageViewScaleType(ScaleType scaleType){
+        ImageLoaderManager.getInstance().setmScaleType(scaleType);
+        return this;
+    }
+
+    /**
      * 设置是否自动播放
      * 默认为true 自动播放
      * @param autoPlay
@@ -162,6 +170,41 @@ public class AdPlayBanner extends RelativeLayout {
 
     public interface OnPageClickListener {
         void onPageClick(AdPageInfo info, int postion);
+    }
+
+
+    public enum ScaleType {
+        FIT_XY      (1),
+        FIT_START   (2),
+        FIT_CENTER  (3),
+        FIT_END     (4),
+        CENTER      (5),
+        CENTER_CROP (6),
+        CENTER_INSIDE (7);
+        ScaleType(int ni) {
+            nativeInt = ni;
+        }
+        final int nativeInt;
+    }
+
+    public enum ImageLoaderType {
+        FRESCO (1),
+        GLIDE (2),
+        PICASSO (3);
+        ImageLoaderType(int ni) {
+            nativeInt = ni;
+        }
+        final int nativeInt;
+    }
+
+    public enum IndicatorType {
+        NONE_INDICATOR (0),
+        NUMBER_INDICATOR (1),
+        POINT_INDICATOR (2);
+        IndicatorType(int ni) {
+            nativeInt = ni;
+        }
+        final int nativeInt;
     }
 
 }
