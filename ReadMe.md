@@ -10,7 +10,7 @@ Github地址为：[https://github.com/ryanlijianchang/AdPlayBanner](https://gith
 
 ## 一、使用方法 ##
 
-#### 1.添加依赖 ####
+### 1.添加依赖 ###
 
 首先，在项目级别的`build.gradle`文件添加依赖：
 
@@ -27,7 +27,7 @@ Github地址为：[https://github.com/ryanlijianchang/AdPlayBanner](https://gith
 		compile 'com.github.ryanlijianchang:AdPlayBanner:v0.2'
 	}
 
-#### 2.在布局文件中添加控件 ####
+### 2.在布局文件中添加控件 ###
 
 在布局文件中添加AdPlayBanner控件，根据自己的需要设置高度，注意，控件需要在一个布局（可以是LinearLayout，RelativeLayout，FrameLayout等）之内。
 
@@ -36,17 +36,17 @@ Github地址为：[https://github.com/ryanlijianchang/AdPlayBanner](https://gith
         android:layout_width="match_parent"
         android:layout_height="200dp" />
 
-#### 3.在Activity中绑定控件 ####
+### 3.在Activity中绑定控件 ###
 	
 	mAdPlayBanner = (AdPlayBanner) findViewById(R.id.game_banner);
 
-#### 4.添加网络权限 ####
+### 4.添加网络权限 ###
 
 由于加载的是网络图片，所以需要在Manifests文件中添加网络请求权限 
 	
 	<uses-permission android:name="android.permission.INTERNET" />
 
-#### 5.初始化Fresco ####
+### 5.初始化Fresco ###
 
 默认使用Fresco加载图片，所以按照Fresco官方做法，需要在Application创建时初始化Fresco，常规做法如下：
 
@@ -72,7 +72,7 @@ Github地址为：[https://github.com/ryanlijianchang/AdPlayBanner](https://gith
 
 当然，如果你不使用Fresco加载，以上步骤可以跳过。
 
-#### 6.一键式使用 ####
+### 6.一键式使用 ###
 	
 AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来直接装载AdPlayBanner，当然也可以使用常规写法。在使用之前需要先设置数据源，使用ArrayList<AdPageInfo>来封装数据，而AdPageInfo是一个封装好的Bean类，封装如下：
 
@@ -96,7 +96,7 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
 
 ## 二、功能介绍 ##
 
-#### 1.自定义数据顺序 ####
+### 1.自定义数据顺序 ###
 
 在调用`setUp()`方法之前，我们需要设置数据源，每一页的数据使用`AdPageInfo`来封装，它里面就有一个int型变量`order`,我们通过给每一个`AdPageInfo`赋值order，AdPlayBanner就会**自动**按照order的大小来排序，如：
 
@@ -114,13 +114,13 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
 
 ![](http://osjnd854m.bkt.clouddn.com/order.gif)
 
-#### 2.无限循环轮播 ####
+### 2.无限循环轮播 ###
 
 很多轮播插件没有实现无限循环轮播这个功能, 而在AdPlayBanner上得到了实现，如下图可见，当我们无限循环滑动时，插件仍能正常运行：
 
 ![](http://osjnd854m.bkt.clouddn.com/pic_circle_play_new.gif)
 
-#### 3.支持三种图片加载方式 ####
+### 3.支持三种图片加载方式 ###
 
 目前比较主流的Fresco、Picasso、Glide三种图片加载方式在AdPlayBanner中都支持，至于三者的区别我就不赘述了，默认是使用Fresco方式加载，具体调用方法`setImageLoadType(ImageLoaderType type)`，只需要将传入数据设置为：`FRESCO`、`GLIDE`、`PICASSO`其中一种即可，同样，也是可以通过代码一键式使用，例如使用Glide方式加载（其他加载方式使用类似），使用方法如下：
 
@@ -129,7 +129,7 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
             .setImageLoadType(Glide)	// 设置Glide类型的图片加载方式
             .setUp();
 
-#### 4.支持多种ScaleType ####
+### 4.支持多种ScaleType ###
 
 在AdPlayBanner中，可以根据用户需要设置图片的ScaleType，具体效果和ImageView的ScaleType一致，默认是使用`FIT_XY`，但是在AdPlayBanner中比ImageView少了一种`MATRIX`类型，在AdPlayBanner中具体支持的ScaleType有如下：`FIT_XY`、`FIT_START`、`FIT_CENTER`、`FIT_END`、`CENTER`、`CENTER_CROP`、`CENTER_INSIDE`其中，具体调用方法`setImageViewScaleType(ScaleType scaleType)`，只需要将具体的ScaleType传入即可，同样，也是可以通过代码一键式使用，例如设置ScaleType为`FIT_START`（其他类似），使用方法如下：
 
@@ -138,7 +138,7 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
             .setImageViewScaleType(FIT_START)	// 设置FIT_START类型的ScaleType
             .setUp();
 
-#### 5.支持不同页码指示器 ####
+### 5.支持不同页码指示器 ###
 
 在AdPlayBanner中，提供了`数字型`、`点型`和`空型`页码指示器，用户可以通过调用`setIndicatorType(IndicatorType type)`，传入`NONE_INDICATOR`，`NUMBER_INDICATOR`，`POINT_INDICATOR`其中一种，即可显示对应的页码指示器，三种页码指示器对应效果如下：
 
@@ -150,7 +150,7 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
 
 ![](http://osjnd854m.bkt.clouddn.com/indicator_number.jpg)
 
-(2) `POINT_INDICATOR`：点型页码指示器
+(3) `POINT_INDICATOR`：点型页码指示器
 
 ![](http://osjnd854m.bkt.clouddn.com/indicator_point.jpg)
 
@@ -173,7 +173,7 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
 
 ![](http://osjnd854m.bkt.clouddn.com/numberview_color.jpg)
 
-#### 6.添加灵活性标题 #####
+### 6.添加灵活性标题 ###
 
 在AdPlayBanner中，只需要调用`addTitleView(TitleView mTitleView)`，就可以插入标题了，并且该标题的灵活性很强，可以根据用户需要修改标题的背景、位置、字体大小、padding、magin等，先上一个提供的默认效果：
 
@@ -215,7 +215,7 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
 ![](http://osjnd854m.bkt.clouddn.com/pic_title_view_zidingyi%20.gif)
 
 
-#### 7.支持多样式切换动画 ####
+### 7.支持多样式切换动画 ###
 
 由于AdPlayBanner是基于ViewPager实现的，所以AdPlayBanner和ViewPager一样，同样支持自定义的切换动画，只需要通过调用`setPageTransfromer(ViewPager.PageTransformer transformer)`方法，传入一个PageTransformer，即可改变它的切换样式，AdPlayBanner中提供了三种现成的切换方式：
 
@@ -242,15 +242,15 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
 
 当然，你也可以自定义一个transformer实现ViewPager.PageTransformer接口，并重写`transformPage(View view, float position)`方法即可实现自定义的切换效果。
 
-#### 8.设置是否自动轮播 ####
+### 8.设置是否自动轮播 ###
 
 通过调用`setAutoPlay(boolean autoPlay)`,传入boolean值控制是否自动播放的开关，传入true为自动，传入false为手动。
 
-#### 9.设置自动滑动间隔时间 ####
+### 9.设置自动滑动间隔时间 ###
 
 通过调用`setInterval(int interval)`，传入int型的时间（单位ms），即可改变AdPlayBanner自动轮播时的切换时间。
 
-#### 10.设置点击事件监听器 ####
+### 10.设置点击事件监听器 ###
 
 AdPlayBanner支持点击事件监听，通过调用`setOnPageClickListener(OnPageClickListener l) `，传入OnPageClickListener，即可完成AdPlayBanner的点击监听，使用方法非常简单：
 
@@ -312,13 +312,17 @@ int getOrder() | 获取排序优先级 |
 
 ## 四、版本特性 ##
 
+### v0.1 ###
+
+1. 基本框架搭建完成；
+
 ### V0.2 ###
 
 1. 支持定义数据顺序；
 2. 无限循环轮播；
 3. 支持Fresco、Glide、Picasso三种图片加载方式；
 4. 支持多种ScaleType；
-5. 支持点型、数字型、空型页码指示器；支持修改数字型页码器的样式
+5. 支持点型、数字型、空型页码指示器；支持修改数字型页码器的样式；
 6. 支持灵活性标题；支持修改标题的位置、字体大小、颜色、边距值等属性；
 7. 支持多样式切换动画；
 8. 支持设置自动轮播开关；
@@ -336,7 +340,7 @@ AdPlayBanner作为作者的第一个开源控件，作者也是非常用心认�
 
 
 - Email：liji.anchang@163.com 
-- CSDN: [http://blog.csdn.net/ljcitworld](http://blog.csdn.net/ljcitworld)
+- CSDN：[http://blog.csdn.net/ljcitworld](http://blog.csdn.net/ljcitworld)
 - Github：[https://github.com/ryanlijianchang](https://github.com/ryanlijianchang)
 
 
