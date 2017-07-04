@@ -1,8 +1,12 @@
 # AdPlayBanner #
 
-AdPlayBanner是一个Android平台基于ViewPager实现的轮播图插件，主要用以自动或者手动地播放轮播图，提供了Fresco、Picasso、Glide等图片加载方式供用户使用，以及多种图片切换动画，设置轮播时间，设置数据源顺序，提供不同分页指示器等功能，实现了一键式、灵活式的控件使用方式。下面是效果图：
+[AdPlayBanner](https://github.com/ryanlijianchang/AdPlayBanner)是一个Android平台基于ViewPager实现的轮播图插件，主要用以自动或者手动地播放轮播图，提供了Fresco、Picasso、Glide等图片加载方式供用户使用，以及多种图片切换动画，设置轮播时间，设置数据源顺序，提供不同分页指示器等功能，实现了一键式、灵活式的控件使用方式。下面是效果图：
 
 ![](http://osjnd854m.bkt.clouddn.com/banner_pic1.gif)
+
+目前AdPlayBanner已经开源到了Github上面，大家可以在Github上面查看本控件的Demo，或者直接使用。
+
+Github地址为：[https://github.com/ryanlijianchang/AdPlayBanner](https://github.com/ryanlijianchang/AdPlayBanner)
 
 ## 一、使用方法 ##
 
