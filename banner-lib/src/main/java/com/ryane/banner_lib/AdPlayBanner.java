@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.ryane.banner_lib.indicator.IndicatorManager;
-import com.ryane.banner_lib.laoder.ImageLoaderManager;
+import com.ryane.banner_lib.loader.ImageLoaderManager;
 import com.ryane.banner_lib.sort.QuickSort;
 import com.ryane.banner_lib.view.NumberView;
 import com.ryane.banner_lib.view.TitleView;
@@ -56,6 +56,7 @@ public class AdPlayBanner extends RelativeLayout {
 
     /**
      * 设置指示器类型
+     *
      * @param type
      * @return
      */
@@ -100,6 +101,7 @@ public class AdPlayBanner extends RelativeLayout {
     /**
      * 设置切换动画
      * 如果不设置动画，设置为null
+     *
      * @param transformer
      */
     public AdPlayBanner setPageTransfromer(ViewPager.PageTransformer transformer) {
@@ -114,6 +116,7 @@ public class AdPlayBanner extends RelativeLayout {
 
     /**
      * 设置数字页码的颜色
+     *
      * @param normalColor   数字正常背景颜色
      * @param selectedColor 数字选中背景颜色
      * @param numberColor   数字字体颜色
@@ -131,20 +134,22 @@ public class AdPlayBanner extends RelativeLayout {
 
     /**
      * 设置事件点击监听器
+     *
      * @param l
      * @return
      */
     public AdPlayBanner setOnPageClickListener(OnPageClickListener l) {
-        ImageLoaderManager.mOnPageClickListener = l;
+        ImageLoaderManager.getInstance().setmOnPageClickListener(l);
         return this;
     }
 
     /**
      * 设置图片显示方式
+     *
      * @param scaleType
      * @return
      */
-    public AdPlayBanner setImageViewScaleType(ScaleType scaleType){
+    public AdPlayBanner setImageViewScaleType(ScaleType scaleType) {
         ImageLoaderManager.getInstance().setmScaleType(scaleType);
         return this;
     }
@@ -152,6 +157,7 @@ public class AdPlayBanner extends RelativeLayout {
     /**
      * 设置是否自动播放
      * 默认为true 自动播放
+     *
      * @param autoPlay
      * @return
      */
@@ -168,42 +174,54 @@ public class AdPlayBanner extends RelativeLayout {
         mScrollerPager.show();
     }
 
+    public void stop() {
+        if (mScrollerPager == null)
+            return;
+        mScrollerPager.stop();
+    }
+
     public interface OnPageClickListener {
         void onPageClick(AdPageInfo info, int postion);
     }
 
 
     public enum ScaleType {
-        FIT_XY      (1),
-        FIT_START   (2),
-        FIT_CENTER  (3),
-        FIT_END     (4),
-        CENTER      (5),
-        CENTER_CROP (6),
-        CENTER_INSIDE (7);
+        FIT_XY(1),
+        FIT_START(2),
+        FIT_CENTER(3),
+        FIT_END(4),
+        CENTER(5),
+        CENTER_CROP(6),
+        CENTER_INSIDE(7);
+
         ScaleType(int ni) {
             nativeInt = ni;
         }
+
         final int nativeInt;
     }
 
     public enum ImageLoaderType {
-        FRESCO (1),
-        GLIDE (2),
-        PICASSO (3);
+        FRESCO(1),
+        GLIDE(2),
+        PICASSO(3);
+
         ImageLoaderType(int ni) {
             nativeInt = ni;
         }
+
         final int nativeInt;
     }
 
     public enum IndicatorType {
-        NONE_INDICATOR (0),
-        NUMBER_INDICATOR (1),
-        POINT_INDICATOR (2);
+        NONE_INDICATOR(0),
+        NUMBER_INDICATOR(1),
+        POINT_INDICATOR(2);
+
         IndicatorType(int ni) {
             nativeInt = ni;
         }
+
         final int nativeInt;
     }
 

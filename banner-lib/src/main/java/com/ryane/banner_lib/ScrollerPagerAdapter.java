@@ -5,7 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ryane.banner_lib.laoder.ImageLoaderManager;
+import com.ryane.banner_lib.loader.ImageLoaderManager;
 
 import java.util.List;
 
@@ -58,10 +58,6 @@ public class ScrollerPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
-    }
-
-    public void setmOnPageClickListener(AdPlayBanner.OnPageClickListener l) {
-       ImageLoaderManager.getInstance().setmOnPageClickListener(l);
     }
 
 }

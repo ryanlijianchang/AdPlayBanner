@@ -332,6 +332,10 @@ public class ScrollerPager extends ViewPager {
         }
     }
 
+    public void stop(){
+        stopAdvertPlay();
+    }
+
     /**
      * 装载ScrollerPager
      */

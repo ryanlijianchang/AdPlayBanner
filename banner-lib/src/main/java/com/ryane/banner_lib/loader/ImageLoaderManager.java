@@ -1,4 +1,4 @@
-package com.ryane.banner_lib.laoder;
+package com.ryane.banner_lib.loader;
 
 import android.content.Context;
 import android.net.Uri;
@@ -28,7 +28,8 @@ import java.util.ArrayList;
 public class ImageLoaderManager {
     private AdPlayBanner.ImageLoaderType mImageLoaderType = AdPlayBanner.ImageLoaderType.FRESCO;  // 图片加载方式，默认0
 
-    public static AdPlayBanner.OnPageClickListener mOnPageClickListener = null;
+    private AdPlayBanner.OnPageClickListener mOnPageClickListener = null;
+
     private AdPlayBanner.ScaleType mScaleType = AdPlayBanner.ScaleType.FIT_XY;
 
     private final ArrayList<Object> mViewCaches = new ArrayList<>();
