@@ -92,6 +92,10 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
 	mAdPlayBanner.setInfoList(mDatas);
 	mAdPlayBanner.setUp();
 
+### 7.关闭AdPlayBanner ###
+
+在显示AdPlayBanner的页面生命周期到达onDestroy()时，建议调用`mAdPlayBanner.stop()`方法结束AdPlayBanner，避免内存泄漏。
+
 ----------
 
 ## 二、功能介绍 ##
@@ -265,6 +269,10 @@ AdPlayBanner支持点击事件监听，通过调用`setOnPageClickListener(OnPag
         })
         .setUp();
 
+### 11.关闭AdPlayBanner ###
+
+在离开显示AdPlayBanner的页面时，建议调用`stop()`方法，避免内存泄漏。
+
 ## 三、API ##
 
 **AdPlayBanner：实现轮播效果的控件**
@@ -283,6 +291,7 @@ setImageViewScaleType(ScaleType scaleType) | 设置图片的ScaleType | 传入`F
 setAutoPlay(boolean autoPlay) | 设置是否自动播放 | 默认为true 自动播放，传入false为手动
 setInfoList(ArrayList<AdPageInfo> pageInfos) | 设置Banner的数据源 | 传入必须为AdPageInfo类型的ArrayList
 setUp() | 装载AdPlayBanner | 必须在以上所有方法调用完之后才能调用
+stop()  | 结束AdPlayBanner | 在离开显示AdPlayBanner页面时调用，避免内存泄漏
 
 **TitleView ： 标题控件**
 
@@ -329,6 +338,11 @@ int getOrder() | 获取排序优先级 |
 9. 自定义自动滑动间隔时间；
 10. 提供点击事件监听器；
 11. 支持修改AdPlayBanner的背景颜色；
+
+### V0.3 ###
+
+1. 修复了静态变量造成的内存泄漏问题;
+2. 提供手动结束Banner播放的接口;
 
 ## 五、 Demo ##
 

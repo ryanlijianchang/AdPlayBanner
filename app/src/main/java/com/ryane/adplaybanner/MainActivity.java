@@ -40,18 +40,18 @@ public class MainActivity extends AppCompatActivity {
 
         mAdPlayBanner
                 .setImageLoadType(GLIDE)
-                .setAutoPlay(true)
-                .setIndicatorType(POINT_INDICATOR)
-                .setNumberViewColor(0xcc00A600, 0xccea0000, 0xffffffff)
-                .setInterval(3000)
-                .addTitleView(new TitleView(this).setPosition(PARENT_TOP).setTitlePadding(5, 5, 5, 5).setTitleMargin(0, 0, 0, 25).setTitleSize(16).setViewBackground(0x55000000).setTitleColor(getResources().getColor(R.color.white)))
-                .setBannerBackground(0xff000000)
                 .setOnPageClickListener(new AdPlayBanner.OnPageClickListener() {
                     @Override
                     public void onPageClick(AdPageInfo info, int postion) {
                         Toast.makeText(getApplicationContext(), "你点击了图片 " + info.getTitle() + "\n 跳转链接为：" + info.getClickUlr() + "\n 当前位置是：" + postion +"\n 当前优先级是：" + info.getOrder(), Toast.LENGTH_SHORT).show();
                     }
                 })
+                .setAutoPlay(true)
+                .setIndicatorType(POINT_INDICATOR)
+                .setNumberViewColor(0xcc00A600, 0xccea0000, 0xffffffff)
+                .setInterval(3000)
+                .addTitleView(new TitleView(this).setPosition(PARENT_TOP).setTitlePadding(5, 5, 5, 5).setTitleMargin(0, 0, 0, 25).setTitleSize(16).setViewBackground(0x55000000).setTitleColor(getResources().getColor(R.color.white)))
+                .setBannerBackground(0xff000000)
                 .setPageTransfromer(new FadeInFadeOutTransformer())
                 .setInfoList((ArrayList<AdPageInfo>) mDatas)
                 .setUp();
