@@ -1,15 +1,15 @@
-package com.ryane.banner_lib;
+package com.ryane.banner;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.ryane.banner_lib.indicator.IndicatorManager;
-import com.ryane.banner_lib.loader.ImageLoaderManager;
-import com.ryane.banner_lib.sort.QuickSort;
-import com.ryane.banner_lib.view.NumberView;
-import com.ryane.banner_lib.view.TitleView;
+import com.ryane.banner.indicator.IndicatorManager;
+import com.ryane.banner.loader.ImageLoaderManager;
+import com.ryane.banner.sort.QuickSort;
+import com.ryane.banner.view.NumberView;
+import com.ryane.banner.view.TitleView;
 
 import java.util.ArrayList;
 import java.util.List;

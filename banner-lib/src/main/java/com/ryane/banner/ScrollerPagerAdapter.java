@@ -1,11 +1,11 @@
-package com.ryane.banner_lib;
+package com.ryane.banner;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ryane.banner_lib.loader.ImageLoaderManager;
+import com.ryane.banner.loader.ImageLoaderManager;
 
 import java.util.List;
 

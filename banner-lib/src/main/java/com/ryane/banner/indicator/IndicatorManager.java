@@ -1,8 +1,8 @@
-package com.ryane.banner_lib.indicator;
+package com.ryane.banner.indicator;
 
-import com.ryane.banner_lib.AdPlayBanner;
+import com.ryane.banner.AdPlayBanner;
 
-import static com.ryane.banner_lib.AdPlayBanner.IndicatorType.NONE_INDICATOR;
+import static com.ryane.banner.AdPlayBanner.IndicatorType.NONE_INDICATOR;
 
 /**
  * Creator: lijianchang

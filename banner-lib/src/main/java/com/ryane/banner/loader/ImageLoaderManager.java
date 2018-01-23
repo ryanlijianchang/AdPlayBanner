@@ -1,4 +1,4 @@
-package com.ryane.banner_lib.loader;
+package com.ryane.banner.loader;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,8 +13,8 @@ import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.ryane.banner_lib.AdPageInfo;
-import com.ryane.banner_lib.AdPlayBanner;
+import com.ryane.banner.AdPageInfo;
+import com.ryane.banner.AdPlayBanner;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

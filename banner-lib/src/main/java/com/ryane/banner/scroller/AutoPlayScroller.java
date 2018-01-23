@@ -1,4 +1,4 @@
-package com.ryane.banner_lib.scroller;
+package com.ryane.banner.scroller;
 
 import android.content.Context;
 import android.view.animation.Interpolator;

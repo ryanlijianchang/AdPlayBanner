@@ -4,17 +4,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.ryane.banner_lib.AdPageInfo;
-import com.ryane.banner_lib.AdPlayBanner;
-import com.ryane.banner_lib.transformer.FadeInFadeOutTransformer;
-import com.ryane.banner_lib.view.TitleView;
+import com.ryane.banner.AdPageInfo;
+import com.ryane.banner.AdPlayBanner;
+import com.ryane.banner.transformer.FadeInFadeOutTransformer;
+import com.ryane.banner.view.TitleView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ryane.banner_lib.AdPlayBanner.ImageLoaderType.GLIDE;
-import static com.ryane.banner_lib.AdPlayBanner.IndicatorType.POINT_INDICATOR;
-import static com.ryane.banner_lib.view.TitleView.Gravity.PARENT_TOP;
+import static com.ryane.banner.AdPlayBanner.ImageLoaderType.GLIDE;
+import static com.ryane.banner.AdPlayBanner.IndicatorType.POINT_INDICATOR;
+import static com.ryane.banner.view.TitleView.Gravity.PARENT_TOP;
 
 public class MainActivity extends AppCompatActivity {
     private AdPlayBanner mAdPlayBanner;

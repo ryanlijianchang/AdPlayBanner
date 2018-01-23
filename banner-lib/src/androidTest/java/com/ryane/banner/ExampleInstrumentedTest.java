@@ -1,4 +1,4 @@
-package com.ryane.banner_lib;
+package com.ryane.banner;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

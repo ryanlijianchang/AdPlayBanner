@@ -1,4 +1,4 @@
-package com.ryane.banner_lib;
+package com.ryane.banner;
 
 import android.content.Context;
 import android.os.Handler;
@@ -15,18 +15,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
-import com.ryane.banner_lib.indicator.IndicatorManager;
-import com.ryane.banner_lib.scroller.AutoPlayScroller;
-import com.ryane.banner_lib.view.NumberView;
-import com.ryane.banner_lib.view.PointView;
-import com.ryane.banner_lib.view.TitleView;
+import com.ryane.banner.indicator.IndicatorManager;
+import com.ryane.banner.scroller.AutoPlayScroller;
+import com.ryane.banner.view.NumberView;
+import com.ryane.banner.view.PointView;
+import com.ryane.banner.view.TitleView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ryane.banner_lib.AdPlayBanner.IndicatorType.NUMBER_INDICATOR;
-import static com.ryane.banner_lib.AdPlayBanner.IndicatorType.POINT_INDICATOR;
+import static com.ryane.banner.AdPlayBanner.IndicatorType.NUMBER_INDICATOR;
+import static com.ryane.banner.AdPlayBanner.IndicatorType.POINT_INDICATOR;
 
 /**
  * Creator: lijianchang

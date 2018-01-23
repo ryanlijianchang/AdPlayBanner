@@ -1,4 +1,4 @@
-package com.ryane.banner_lib;
+package com.ryane.banner;
 
 import android.os.Parcel;
 import android.os.Parcelable;

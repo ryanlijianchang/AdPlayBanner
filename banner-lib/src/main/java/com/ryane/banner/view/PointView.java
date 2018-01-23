@@ -1,4 +1,4 @@
-package com.ryane.banner_lib.view;
+package com.ryane.banner.view;
 
 import android.content.Context;
 import android.graphics.Color;

@@ -1,4 +1,4 @@
-package com.ryane.banner_lib;
+package com.ryane.banner;
 
 import org.junit.Test;
 

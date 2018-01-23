@@ -1,8 +1,6 @@
-package com.ryane.banner_lib.view;
+package com.ryane.banner.view;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -11,9 +9,9 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ryane.banner_lib.R;
+import com.ryane.banner.R;
 
-import static com.ryane.banner_lib.view.TitleView.Gravity.PARENT_BOTTOM;
+import static com.ryane.banner.view.TitleView.Gravity.PARENT_BOTTOM;
 
 /**
  * Creator: lijianchang

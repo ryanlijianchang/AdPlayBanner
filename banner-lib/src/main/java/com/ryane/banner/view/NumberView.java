@@ -1,13 +1,12 @@
-package com.ryane.banner_lib.view;
+package com.ryane.banner.view;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ryane.banner_lib.R;
+import com.ryane.banner.R;
 
 /**
  * Creator: lijianchang

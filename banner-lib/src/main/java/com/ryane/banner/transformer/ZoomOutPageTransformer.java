@@ -1,4 +1,4 @@
-package com.ryane.banner_lib.transformer;
+package com.ryane.banner.transformer;
 
 import android.annotation.SuppressLint;
 import android.support.v4.view.ViewPager;

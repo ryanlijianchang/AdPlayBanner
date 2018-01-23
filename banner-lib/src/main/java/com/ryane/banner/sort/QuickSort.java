@@ -1,6 +1,6 @@
-package com.ryane.banner_lib.sort;
+package com.ryane.banner.sort;
 
-import com.ryane.banner_lib.AdPageInfo;
+import com.ryane.banner.AdPageInfo;
 
 import java.util.ArrayList;
 
