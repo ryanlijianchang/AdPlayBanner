@@ -31,7 +31,7 @@ Github地址为：[https://github.com/ryanlijianchang/AdPlayBanner](https://gith
 
 在布局文件中添加AdPlayBanner控件，根据自己的需要设置高度，注意，控件需要在一个布局（可以是LinearLayout，RelativeLayout，FrameLayout等）之内。
 
-    <com.ryane.banner_lib.AdPlayBanner
+    <com.ryane.banner.AdPlayBanner
         android:id="@+id/game_banner"
         android:layout_width="match_parent"
         android:layout_height="200dp" />
@@ -221,7 +221,7 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
 
 ### 7.支持多样式切换动画 ###
 
-由于AdPlayBanner是基于ViewPager实现的，所以AdPlayBanner和ViewPager一样，同样支持自定义的切换动画，只需要通过调用`setPageTransfromer(ViewPager.PageTransformer transformer)`方法，传入一个PageTransformer，即可改变它的切换样式，AdPlayBanner中提供了三种现成的切换方式：
+由于AdPlayBanner是基于ViewPager实现的，所以AdPlayBanner和ViewPager一样，同样支持自定义的切换动画，只需要通过调用`setPageTransformer(ViewPager.PageTransformer transformer)`方法，传入一个PageTransformer，即可改变它的切换样式，AdPlayBanner中提供了三种现成的切换方式：
 
 - `FadeInFadeOutTransformer`：淡入淡出效果
 
@@ -241,7 +241,7 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
             .setInfoList((ArrayList<AdPageInfo>) mDatas)
             .setIndicatorType(POINT_INDICATOR)     // 使用数字页码指示器
             .setBannerBackground(0xff000000)       // 设置背景颜色
-            .setPageTransfromer(new ZoomOutPageTransformer())   // 设置切换效果
+            .setPageTransformer(new ZoomOutPageTransformer())   // 设置切换效果
             .setUp();
 
 当然，你也可以自定义一个transformer实现ViewPager.PageTransformer接口，并重写`transformPage(View view, float position)`方法即可实现自定义的切换效果。
@@ -284,7 +284,7 @@ setBannerBackground(int color) | 设置AdPlayBanner的背景颜色  | 传入colo
 setIndicatorType(IndicatorType type) | 设置页码指示器类型  | 传入`NONE_INDICATOR`，`NUMBER_INDICATOR`，`POINT_INDICATOR`其中一种
 setInterval(int interval) | 设置自动轮播时的切换时间 | 单位ms
 setImageLoadType(ImageLoaderType type) | 设置图片加载方式 | 传入`FRESCO`、`GLIDE`、`PICASSO`其中一种
-setPageTransfromer(ViewPager.PageTransformer transformer) | 设置切换动画，如果不设置动画，设置为null | 提供了`FadeInFadeOutTransformer`，`RotateDownTransformer`，`ZoomOutPageTransformer`三种，也可以传入自定义的TransFormer
+setPageTransformer(ViewPager.PageTransformer transformer) | 设置切换动画，如果不设置动画，设置为null | 提供了`FadeInFadeOutTransformer`，`RotateDownTransformer`，`ZoomOutPageTransformer`三种，也可以传入自定义的TransFormer
 setNumberViewColor(int normalColor, int selectedColor, int numberColor) | 设置数字页码的颜色 | normalColor   数字正常背景颜色，selectedColor 数字选中背景颜色，numberColor   数字字体颜色
 setOnPageClickListener(OnPageClickListener l) | 设置事件点击监听器 | 传入一个OnPageClickListener
 setImageViewScaleType(ScaleType scaleType) | 设置图片的ScaleType | 传入`FIT_XY`、`FIT_START`、`FIT_CENTER`、`FIT_END`、`CENTER`、`CENTER_CROP`、`CENTER_INSIDE`其中一种
