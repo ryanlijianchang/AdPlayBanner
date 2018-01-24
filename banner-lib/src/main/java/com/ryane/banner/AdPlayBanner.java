@@ -174,6 +174,16 @@ public class AdPlayBanner extends RelativeLayout {
     }
 
     /**
+     * 设置是否可以手动滑动
+     * @param canScroll 是否可以手动滑动
+     * @return this
+     */
+    public AdPlayBanner setCanScroll(boolean canScroll) {
+        ScrollerPager.canScroll = canScroll;
+        return this;
+    }
+
+    /**
      * 装载AdPlayBanner
      */
     public void setUp() {

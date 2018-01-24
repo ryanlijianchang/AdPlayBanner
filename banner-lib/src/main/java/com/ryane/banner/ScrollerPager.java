@@ -84,6 +84,10 @@ public class ScrollerPager extends ViewPager {
      */
     public static boolean mAutoPlay = true;
     /**
+     * 是否可以手动滑动
+     */
+    public static boolean canScroll = true;
+    /**
      * 间隔时间，默认2000ms
      */
     public static int mInterval = 2000;
@@ -442,6 +446,14 @@ public class ScrollerPager extends ViewPager {
         }
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (canScroll) {
+            return super.onInterceptTouchEvent(ev);
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {

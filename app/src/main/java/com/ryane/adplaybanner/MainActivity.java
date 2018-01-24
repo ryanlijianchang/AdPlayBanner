@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 .setBannerBackground(0xff565656)
                 .setPageTransformer(new RotateDownTransformer())
                 .setInfoList(dataTest)
+                // 设置不可以手动滑动
+                .setCanScroll(false)
                 .setUp();
     }
 
