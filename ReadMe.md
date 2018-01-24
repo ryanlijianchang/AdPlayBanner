@@ -24,7 +24,7 @@ Github地址为：[https://github.com/ryanlijianchang/AdPlayBanner](https://gith
 然后，在模块目录下的`build.gradle`文件添加依赖：
 
     dependencies {
-		  compile 'com.github.ryanlijianchang:AdPlayBanner:v0.4'
+		  compile 'com.github.ryanlijianchang:AdPlayBanner:v0.5'
 	}
 
 ### 2.在布局文件中添加控件 ###
@@ -250,11 +250,15 @@ AdPlayBanner使用了Builder设计模式，所以可以通过一键式写法来�
 
 通过调用`setAutoPlay(boolean autoPlay)`,传入boolean值控制是否自动播放的开关，传入true为自动，传入false为手动。
 
-### 9.设置自动滑动间隔时间 ###
+### 9.设置是否可以手动滑动 ###
+
+通过调用`setCanScroll(boolean canScroll)`,传入boolean值控制是否可以手动滑动，传入true为可以，传入false为不可以。
+
+### 10.设置自动滑动间隔时间 ###
 
 通过调用`setInterval(int interval)`，传入int型的时间（单位ms），即可改变AdPlayBanner自动轮播时的切换时间。
 
-### 10.设置点击事件监听器 ###
+### 11.设置点击事件监听器 ###
 
 AdPlayBanner支持点击事件监听，通过调用`setOnPageClickListener(OnPageClickListener l) `，传入OnPageClickListener，即可完成AdPlayBanner的点击监听，使用方法非常简单：
 
@@ -269,9 +273,18 @@ AdPlayBanner支持点击事件监听，通过调用`setOnPageClickListener(OnPag
         })
         .setUp();
 
-### 11.关闭AdPlayBanner ###
+### 12.关闭AdPlayBanner ###
 
 在离开显示AdPlayBanner的页面时，建议调用`stop()`方法，避免内存泄漏。
+
+	@Override
+    protected void onDestroy() {
+        if (mAdPlayBanner != null) {
+            // 结束时需要调用stop释放资源
+            mAdPlayBanner.stop();
+        }
+        super.onDestroy();
+    }
 
 ## 三、API ##
 
@@ -289,6 +302,7 @@ setNumberViewColor(int normalColor, int selectedColor, int numberColor) | 设置
 setOnPageClickListener(OnPageClickListener l) | 设置事件点击监听器 | 传入一个OnPageClickListener
 setImageViewScaleType(ScaleType scaleType) | 设置图片的ScaleType | 传入`FIT_XY`、`FIT_START`、`FIT_CENTER`、`FIT_END`、`CENTER`、`CENTER_CROP`、`CENTER_INSIDE`其中一种
 setAutoPlay(boolean autoPlay) | 设置是否自动播放 | 默认为true 自动播放，传入false为手动
+setCanScroll(boolean canScroll) | 设置是否可以手动滑动 | 默认为true可以，传入false为不可以
 setInfoList(ArrayList<AdPageInfo> pageInfos) | 设置Banner的数据源 | 传入必须为AdPageInfo类型的ArrayList
 setUp() | 装载AdPlayBanner | 必须在以上所有方法调用完之后才能调用
 stop()  | 结束AdPlayBanner | 在离开显示AdPlayBanner页面时调用，避免内存泄漏
@@ -320,6 +334,10 @@ void setOrder(int order) | 设置排序的优先级 | 设置了order，AdPlayBan
 int getOrder() | 获取排序优先级 |
 
 ## 四、版本特性 ##
+
+### V0.5 ###
+
+1. 增加`setCanScroll(boolean canScroll)`接口控制是否可以手动滑动。
 
 ### V0.4 ###
 
