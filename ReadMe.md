@@ -4,13 +4,26 @@
 
 ![](http://osjnd854m.bkt.clouddn.com/banner_pic1.gif)
 
-目前AdPlayBanner已经开源到了Github上面，大家可以在Github上面查看本控件的Demo，或者直接使用。
+目前AdPlayBanner已经开源到了[Github](https://github.com/ryanlijianchang/AdPlayBanner)上面，大家可以在Github上面查看本控件的Demo，或者直接使用。
 
-Github地址为：[https://github.com/ryanlijianchang/AdPlayBanner](https://github.com/ryanlijianchang/AdPlayBanner)
+如果你想了解AdPlayBanner的实现思路，可以移步到[《手把手、脑把脑教你实现一个无限循环的轮播控件》](https://juejin.im/post/595cc6115188250d7e732180)，里面已经把实现过程告诉大家，或者可以下载demo来自行理解。
 
 ## 一、使用方法 ##
 
 ### 1.添加依赖 ###
+
+#### bintray依赖 ####
+
+如果使用bintray依赖，直接在模块目录下的`build.gradle`文件添加依赖：
+
+	dependencies {
+		  compile 'com.ryane.banner:banner-lib:0.5'
+	}
+
+#### jitpack依赖 ####
+
+如果使用jitpack依赖，会需要操作多一步骤。
+
 
 首先，在项目级别的`build.gradle`文件添加依赖：
 
