@@ -24,7 +24,7 @@ Github地址为：[https://github.com/ryanlijianchang/AdPlayBanner](https://gith
 然后，在模块目录下的`build.gradle`文件添加依赖：
 
     dependencies {
-		compile 'com.github.ryanlijianchang:AdPlayBanner:v0.2'
+		  compile 'com.github.ryanlijianchang:AdPlayBanner:v0.4'
 	}
 
 ### 2.在布局文件中添加控件 ###
@@ -321,9 +321,17 @@ int getOrder() | 获取排序优先级 |
 
 ## 四、版本特性 ##
 
-### v0.1 ###
+### V0.4 ###
 
-1. 基本框架搭建完成；
+1. FIX BUG 多次刷新时数据源为空时造成的崩溃。
+2. 代码、布局、性能优化。
+3. 第三方库升级和gradle升级。
+
+
+### V0.3 ###
+
+1. 修复了静态变量造成的内存泄漏问题;
+2. 提供手动结束Banner播放的接口;
 
 ### V0.2 ###
 
@@ -339,10 +347,9 @@ int getOrder() | 获取排序优先级 |
 10. 提供点击事件监听器；
 11. 支持修改AdPlayBanner的背景颜色；
 
-### V0.3 ###
+### v0.1 ###
 
-1. 修复了静态变量造成的内存泄漏问题;
-2. 提供手动结束Banner播放的接口;
+1. 基本框架搭建完成；
 
 ## 五、 Demo ##
 
