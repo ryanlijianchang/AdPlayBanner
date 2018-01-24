@@ -325,7 +325,8 @@ int getOrder() | 获取排序优先级 |
 
 1. FIX BUG 多次刷新时数据源为空时造成的崩溃。
 2. 代码、布局、性能优化。
-3. 第三方库升级和gradle升级。
+3. gradle升级。
+4. Fresco升级至V1.8(支持GIF、WebP)；Picasso版本升级至V2.5.2；Glide是V4.0.0。
 
 
 ### V0.3 ###
