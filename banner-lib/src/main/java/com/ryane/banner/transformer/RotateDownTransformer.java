@@ -4,21 +4,24 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 /**
- * Creator: lijianchang
+ * 旋转
  * Create Time: 2017/6/19.
- * Email: lijianchang@yy.com
+ *
+ * @author RyanLee
  */
 
 public class RotateDownTransformer implements ViewPager.PageTransformer {
 
-    // 旋转的最大角度为20度
+    /**
+     * 旋转的最大角度为20度
+     */
     private static final float MAX_ROTATE = 20.0f;
-    // 旋转过程中的角度
-    private float currentRotate;
 
     @Override
     public void transformPage(View view, float position) {
         int pageWidth = view.getWidth();
+        // 旋转过程中的角度
+        float currentRotate;
         if (position < -1) {
             view.setRotation(0);
         } else if (position <= 0) {

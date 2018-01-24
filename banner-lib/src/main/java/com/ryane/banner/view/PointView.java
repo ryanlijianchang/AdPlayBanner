@@ -12,9 +12,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 
 /**
- * Creator: lijianchang
  * Create Time: 2017/6/30.
- * Email: lijianchang@yy.com
+ * @author RyanLee
  */
 
 public class PointView extends android.support.v7.widget.AppCompatTextView {
@@ -79,7 +78,7 @@ public class PointView extends android.support.v7.widget.AppCompatTextView {
         setMinWidth((int) mSize);
     }
 
-    public void setmColor(int mColor) {
+    public void setPointViewColor(int mColor) {
         this.mColor = mColor;
         change();
     }

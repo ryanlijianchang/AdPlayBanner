@@ -6,26 +6,26 @@ import android.util.Log;
 import android.view.View;
 
 /**
- * Creator: lijianchang
  * Create Time: 2017/6/19.
- * Email: lijianchang@yy.com
+ * @author RyanLee
  */
 public class ZoomOutPageTransformer implements ViewPager.PageTransformer {
     private static final float MIN_SCALE = 0.85f;
     private static final float MIN_ALPHA = 0.5f;
 
-    @SuppressLint("NewApi")
+    @Override
     public void transformPage(View view, float position) {
         int pageWidth = view.getWidth();
         int pageHeight = view.getHeight();
 
         Log.e("TAG", view + " , " + position + "");
 
-        if (position < -1) { // [-Infinity,-1)
+        // [-Infinity,-1)
+        if (position < -1) {
             // This page is way off-screen to the left.
             view.setAlpha(0);
-
-        } else if (position <= 1) { //a页滑动至b页 ； a页从 0.0 -1 ；b页从1 ~ 0.0
+        } else if (position <= 1) {
+            //a页滑动至b页 ； a页从 0.0 -1 ；b页从1 ~ 0.0
             // [-1,1]
             // Modify the default slide transition to shrink the page as well
             float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));

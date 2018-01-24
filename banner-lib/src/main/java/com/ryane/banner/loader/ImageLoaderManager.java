@@ -3,7 +3,6 @@ package com.ryane.banner.loader;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,18 +19,29 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * Creator: lijianchang
  * Create Time: 2017/6/19.
- * Email: lijianchang@yy.com
+ * @author RyanLee
  */
 
 public class ImageLoaderManager {
-    private AdPlayBanner.ImageLoaderType mImageLoaderType = AdPlayBanner.ImageLoaderType.FRESCO;  // 图片加载方式，默认0
+    /**
+     * 图片加载方式，默认Fresco
+     */
+    private AdPlayBanner.ImageLoaderType mImageLoaderType = AdPlayBanner.ImageLoaderType.FRESCO;
 
+    /**
+     * 点击监听
+     */
     private AdPlayBanner.OnPageClickListener mOnPageClickListener = null;
 
+    /**
+     * ScaleType，默认是FIT_XY
+     */
     private AdPlayBanner.ScaleType mScaleType = AdPlayBanner.ScaleType.FIT_XY;
 
+    /**
+     * 图片的缓存集合
+     */
     private final ArrayList<Object> mViewCaches = new ArrayList<>();
 
     private static class SingletonHolder {
@@ -41,7 +51,7 @@ public class ImageLoaderManager {
     private ImageLoaderManager() {
     }
 
-    public static final ImageLoaderManager getInstance() {
+    public static ImageLoaderManager getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
@@ -49,7 +59,7 @@ public class ImageLoaderManager {
      * 设置图片加载方式
      * TYPE_FRESCO : 使用Facebook的fresco来加载图片
      *
-     * @param type
+     * @param type ScaleType
      */
     public void setImageLoaderType(AdPlayBanner.ImageLoaderType type) {
         mImageLoaderType = type;
@@ -57,26 +67,32 @@ public class ImageLoaderManager {
 
     /**
      * 设置图片显示方式
-     * @param mScaleType
+     * @param mScaleType ScaleTYpe
      */
-    public void setmScaleType(AdPlayBanner.ScaleType mScaleType) {
+    public void setScaleType(AdPlayBanner.ScaleType mScaleType) {
         this.mScaleType = mScaleType;
     }
 
-    public AdPlayBanner.ScaleType getScaleType() {
-        return mScaleType;
-    }
-
+    /**
+     * 初始化页面的View
+     * @param container 父布局
+     * @param context   上下文
+     * @param info      数据
+     * @param position  位置
+     * @return PageView
+     */
     public Object initPageView(ViewGroup container, Context context, final AdPageInfo info, final int position) {
-        Log.d("smzq", "initpageView");
-        Log.d("ImageLoaderManager", "position = " + position + "; mViewCaches.size() = " + mViewCaches.size() + "; container.size() = " + container.getChildCount()
-                + "; AdPageInfo = " + info.toString());
+        if (container == null || context == null || info == null || position < 0) {
+            return null;
+        }
 
-        Uri uri = Uri.parse(info.picUrl);
+        Uri uri = Uri.parse(info.getPicUrl());
         switch (mImageLoaderType) {
+            //  默认使用fresco
             default:
             case FRESCO:
                 final SimpleDraweeView mFrescoView;
+                // 从缓存中拿到View，如果有就直接拿来用
                 if (mViewCaches.isEmpty()) {
                     mFrescoView = new SimpleDraweeView(context);
                     mFrescoView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -105,7 +121,7 @@ public class ImageLoaderManager {
                 } else {
                     mGlideView = (ImageView) mViewCaches.remove(0);
                 }
-                Glide.with((AppCompatActivity) context).load(info.picUrl).into(mGlideView);
+                Glide.with((AppCompatActivity) context).load(info.getPicUrl()).into(mGlideView);
                 container.addView(mGlideView);
                 mGlideView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -125,7 +141,7 @@ public class ImageLoaderManager {
                 } else {
                     mPicassoView = (ImageView) mViewCaches.remove(0);
                 }
-                Picasso.with(context).load(info.picUrl).into(mPicassoView);
+                Picasso.with(context).load(info.getPicUrl()).into(mPicassoView);
                 mPicassoView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -139,8 +155,12 @@ public class ImageLoaderManager {
         }
     }
 
+    /**
+     * 从container中移除已经添加过的view
+     * @param container  父布局
+     * @param object     不需要用的view
+     */
     public void destroyPageView(ViewGroup container, Object object) {
-        Log.d("smzq", "destroyPageView");
         switch (mImageLoaderType) {
             default:
             case FRESCO:
@@ -163,16 +183,28 @@ public class ImageLoaderManager {
         }
     }
 
-    public void setmOnPageClickListener(AdPlayBanner.OnPageClickListener l) {
-        mOnPageClickListener = l;
+    /**
+     * 设置页面点击事件
+     * @param listener 点击事件监听器
+     */
+    public void setOnPageClickListener(AdPlayBanner.OnPageClickListener listener) {
+        mOnPageClickListener = listener;
     }
 
+    /**
+     * Fresco设置ScaleType
+     * @param context     上下文
+     * @param mFrescoView 图片
+     */
     private void frescoViewSetScaleType(Context context, SimpleDraweeView mFrescoView){
-        GenericDraweeHierarchyBuilder builder =
-                new GenericDraweeHierarchyBuilder(context.getResources());
+        if (context == null || mFrescoView == null) {
+            return;
+        }
+        GenericDraweeHierarchyBuilder builder = new GenericDraweeHierarchyBuilder(context.getResources());
         GenericDraweeHierarchy hierarchy = builder.build();
         mFrescoView.setHierarchy(hierarchy);
         switch (mScaleType) {
+            default:
             case FIT_XY:
                 hierarchy.setActualImageScaleType(ScalingUtils.ScaleType.FIT_XY);
                 break;
@@ -197,8 +229,16 @@ public class ImageLoaderManager {
         }
     }
 
+    /**
+     * Glide和Picasso设置ScaleType
+     * @param imageView 传入的ImageView
+     */
     private void imageViewSetScaleType(ImageView imageView){
+        if (imageView == null) {
+            return;
+        }
         switch (mScaleType) {
+            default:
             case FIT_XY:
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 break;

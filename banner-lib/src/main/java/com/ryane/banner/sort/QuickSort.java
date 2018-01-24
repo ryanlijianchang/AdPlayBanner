@@ -3,15 +3,15 @@ package com.ryane.banner.sort;
 import com.ryane.banner.AdPageInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Creator: lijianchang
  * Create Time: 2017/7/3.
- * Email: lijianchang@yy.com
+ * @author RyanLee
  */
 
 public class QuickSort {
-    public static ArrayList<AdPageInfo> quickSort(ArrayList<AdPageInfo> oList, int left, int right) {
+    public static List<AdPageInfo> quickSort(List<AdPageInfo> oList, int left, int right) {
         AdPageInfo keyInfo;
         if (oList != null && oList.size() > 0) {
             if (left >= right) {

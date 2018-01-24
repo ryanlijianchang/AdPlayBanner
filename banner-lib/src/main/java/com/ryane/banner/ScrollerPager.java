@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -17,6 +16,8 @@ import android.widget.Scroller;
 
 import com.ryane.banner.indicator.IndicatorManager;
 import com.ryane.banner.scroller.AutoPlayScroller;
+import com.ryane.banner.util.ListUtils;
+import com.ryane.banner.util.OsUtil;
 import com.ryane.banner.view.NumberView;
 import com.ryane.banner.view.PointView;
 import com.ryane.banner.view.TitleView;
@@ -29,30 +30,67 @@ import static com.ryane.banner.AdPlayBanner.IndicatorType.NUMBER_INDICATOR;
 import static com.ryane.banner.AdPlayBanner.IndicatorType.POINT_INDICATOR;
 
 /**
- * Creator: lijianchang
  * Create Time: 2017/6/17.
- * Email: lijianchang@yy.com
+ * @author RyanLee
  */
 
 public class ScrollerPager extends ViewPager {
+    /**
+     * 父布局
+     */
     private RelativeLayout mContainer;
+    /**
+     * 标题控件
+     */
     private TitleView mTitleView;
+    /**
+     * 指示器控件
+     */
     private LinearLayout mIndicator;
+    /**
+     * 数字指示器控件
+     */
     private LinearLayout mPageNumberLayout;
-    private List<AdPageInfo> mInfos;
-    private Handler mUIHandler;
+    /**
+     * 数据源
+     */
+    private List<AdPageInfo> mDataList;
+    /**
+     * UI线程的Handler
+     */
+    private Handler mUIHandler = new Handler(Looper.myLooper());
+    /**
+     * 点型指示器
+     */
     private PointView[] mPointViews = null;
+    /**
+     * 数字型指示器
+     */
     private NumberView[] mNumberViews = null;
-    private ScrollerPagerAdapter adapter;
-
-    private int mPointViewSelectedColor = ContextCompat.getColor(getContext(), R.color.point_selected_color);
-    private int mPointViewNormalColor = ContextCompat.getColor(getContext(), R.color.point_normal_color);
-
+    /**
+     * 点型指示器被选中的颜色
+     */
+    private final int POINT_VIEW_SELECTED_COLOR = ContextCompat.getColor(getContext(), R.color.point_selected_color);
+    /**
+     * 点型指示器默认的颜色
+     */
+    private final int POINT_VIEW_NORMAL_COLOR = ContextCompat.getColor(getContext(), R.color.point_normal_color);
+    /**
+     * 切换动画
+     */
     public static ViewPager.PageTransformer mTransformer = null;
-    public static boolean mAutoPlay = true;    // 是否自动播放
-    public static int mInterval = 2000;  // 默认间隔时间
-
-    private int mSelectedIndex = 0;     // 当前下标
+    /**
+     * 是否自动播放
+     */
+    public static boolean mAutoPlay = true;
+    /**
+     * 间隔时间，默认2000ms
+     */
+    public static int mInterval = 2000;
+    /**
+     * 当前下标
+     */
+    private int mSelectedIndex = 0;
 
     public ScrollerPager(Context context) {
         this(context, null);
@@ -60,7 +98,6 @@ public class ScrollerPager extends ViewPager {
 
     public ScrollerPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mUIHandler = new Handler(Looper.getMainLooper());
     }
 
     public ScrollerPager(RelativeLayout mContainer, TitleView mTitleView, List<AdPageInfo> infos) {
@@ -70,9 +107,9 @@ public class ScrollerPager extends ViewPager {
         this.mTitleView = mTitleView;
 
         if (null != infos) {
-            this.mInfos = infos;
+            this.mDataList = infos;
         } else {
-            this.mInfos = new ArrayList<>();
+            this.mDataList = new ArrayList<>();
         }
 
         init();
@@ -82,8 +119,6 @@ public class ScrollerPager extends ViewPager {
      * 初始化操作
      */
     private void init() {
-        mUIHandler = new Handler(Looper.getMainLooper());
-
         // 初始化Indicator
         initIndicator();
         // 初始化数字页码
@@ -91,12 +126,12 @@ public class ScrollerPager extends ViewPager {
         // 初始化切换时间
         initScrollTime(new AutoPlayScroller(getContext(), new LinearInterpolator()));
         // 初始化切换动画
-        initTransformer(true);
+        initTransformer();
 
         // 初始化viewpager start
-        adapter = new ScrollerPagerAdapter(getContext(), mInfos);
+        ScrollerPagerAdapter adapter = new ScrollerPagerAdapter(getContext(), mDataList);
         setAdapter(adapter);
-        setOnPageChangeListener(mOnPageChangeListener);
+        addOnPageChangeListener(mOnPageChangeListener);
         // 初始化viewpager end
     }
 
@@ -104,6 +139,7 @@ public class ScrollerPager extends ViewPager {
      * 初始化Indicator
      */
     private void initIndicator() {
+        // 如果是点型指示器
         if (IndicatorManager.getInstance().getIndicatorType() == POINT_INDICATOR) {
             mIndicator = new LinearLayout(getContext());
             mIndicator.setOrientation(LinearLayout.HORIZONTAL);
@@ -111,11 +147,13 @@ public class ScrollerPager extends ViewPager {
 
             mIndicator.removeAllViews();
 
-            mPointViews = new PointView[mInfos.size()];
+            mPointViews = new PointView[mDataList.size()];
 
-            float pointSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+            // 点的大小为5dp
+            float pointSize = OsUtil.dpToPx(5);
 
-            for (int i = 0; i < mInfos.size(); i++) {
+            int size = mDataList.size();
+            for (int i = 0; i <size; i++) {
                 PointView pointView;
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) pointSize, (int) pointSize);
                 layoutParams.leftMargin = (int) (pointSize / 2);
@@ -128,7 +166,7 @@ public class ScrollerPager extends ViewPager {
                 if (i == 0) {
                     layoutParams.leftMargin = 0;
                 }
-                if (i == mInfos.size() - 1) {
+                if (i == size - 1) {
                     layoutParams.rightMargin = 0;
                 }
                 layoutParams.topMargin = (int) pointSize;
@@ -143,6 +181,7 @@ public class ScrollerPager extends ViewPager {
      * 初始化数字页码
      */
     private void initPageNumber() {
+        // 如果是数字指示器
         if (IndicatorManager.getInstance().getIndicatorType() == NUMBER_INDICATOR) {
             mPageNumberLayout = new LinearLayout(getContext());
             mPageNumberLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -150,9 +189,10 @@ public class ScrollerPager extends ViewPager {
 
             mPageNumberLayout.removeAllViews();
 
-            mNumberViews = new NumberView[mInfos.size()];
+            mNumberViews = new NumberView[mDataList.size()];
 
-            for (int i = 0; i < mInfos.size(); i++) {
+            int size = mDataList.size();
+            for (int i = 0; i < size; i++) {
                 NumberView numberView;
                 if (i == mSelectedIndex) {
                     numberView = new NumberView(getContext(), NumberView.mNumberViewSelectedColor);
@@ -170,7 +210,7 @@ public class ScrollerPager extends ViewPager {
      * 图片A开始滑动到图片B之间的时间
      * 主要是保证两张图片之间的切换动画有足够的时间显示
      *
-     * @param mScroller
+     * @param mScroller 滑动Scroller
      */
     private void initScrollTime(Scroller mScroller) {
         try {
@@ -191,7 +231,7 @@ public class ScrollerPager extends ViewPager {
      * 开始广告滚动任务
      */
     private void startAdvertPlay() {
-        if (mAutoPlay == true) {
+        if (mAutoPlay) {
             stopAdvertPlay();
             mUIHandler.postDelayed(mImageTimmerTask, mInterval);
         }
@@ -211,18 +251,20 @@ public class ScrollerPager extends ViewPager {
 
         @Override
         public void onPageSelected(final int position) {
-            Log.d("ScrollerPager", "position = " + position);
+            if (ListUtils.isEmpty(mDataList)) {
+                return;
+            }
             mSelectedIndex = position;
-            int rightPos = position % mInfos.size();
+            int rightPos = position % mDataList.size();
             if (mTitleView != null) {
-                mTitleView.setTitle(mInfos.get(rightPos).getTitle());
+                mTitleView.setTitle(mDataList.get(rightPos).getTitle());
             }
 
             if (IndicatorManager.getInstance().getIndicatorType() == POINT_INDICATOR && mPointViews != null && mPointViews.length > 0) {
-                mPointViews[rightPos].setmColor(mPointViewSelectedColor);
+                mPointViews[rightPos].setPointViewColor(POINT_VIEW_SELECTED_COLOR);
                 for (int i = 0; i < mPointViews.length; i++) {
                     if (rightPos != i) {
-                        mPointViews[i].setmColor(mPointViewNormalColor);
+                        mPointViews[i].setPointViewColor(POINT_VIEW_NORMAL_COLOR);
                     }
                 }
             }
@@ -257,7 +299,10 @@ public class ScrollerPager extends ViewPager {
         @Override
         public void run() {
             if (mSelectedIndex == Integer.MAX_VALUE) {
-                int rightPos = mSelectedIndex % mInfos.size();
+                if (ListUtils.isEmpty(mDataList)) {
+                    return;
+                }
+                int rightPos = mSelectedIndex % mDataList.size();
                 setCurrentItem(getInitPosition() + rightPos + 1, true);
             } else {
                 setCurrentItem(mSelectedIndex + 1, true);
@@ -268,14 +313,14 @@ public class ScrollerPager extends ViewPager {
     /**
      * 获取banner的初始位置
      *
-     * @return
+     * @return banner的初始位置
      */
     private int getInitPosition() {
-        if (mInfos.isEmpty()) {
+        if (ListUtils.isEmpty(mDataList)) {
             return 0;
         }
         int halfValue = Integer.MAX_VALUE / 2;
-        int position = halfValue % mInfos.size();
+        int position = halfValue % mDataList.size();
         return halfValue - position;
     }
 
@@ -294,16 +339,17 @@ public class ScrollerPager extends ViewPager {
     }
 
 
-    public void setmTitleView(TitleView mTitleView) {
+    public void setTitleView(TitleView mTitleView) {
         this.mTitleView = mTitleView;
     }
 
     /**
      * 设置切换动画
-     *
-     * @param reverseDrawingOrder 是否有切换动画
      */
-    private void initTransformer(boolean reverseDrawingOrder) {
+    private void initTransformer() {
+        if (mTransformer == null) {
+            return;
+        }
         setPageTransformer(true, mTransformer);
     }
 
@@ -312,7 +358,7 @@ public class ScrollerPager extends ViewPager {
      */
     public void show() {
         mContainer.removeAllViews();
-        if (null == mInfos || 0 == mInfos.size()) {
+        if (null == mDataList || 0 == mDataList.size()) {
             stopAdvertPlay();
             mContainer.setVisibility(GONE);
         } else {
@@ -321,7 +367,7 @@ public class ScrollerPager extends ViewPager {
             addPageNumberView();// 把PageNumberView装载到外布局
             addTitleView();     // 把TitleView装载到外布局中
 
-            if (mInfos.size() == 1) {
+            if (mDataList.size() == 1) {
                 stopAdvertPlay();
             } else {
                 startAdvertPlay();
@@ -332,7 +378,7 @@ public class ScrollerPager extends ViewPager {
         }
     }
 
-    public void stop(){
+    public void stop() {
         stopAdvertPlay();
     }
 
@@ -388,10 +434,10 @@ public class ScrollerPager extends ViewPager {
                     layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
                     break;
             }
-            layoutParams.topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mTitleView.marginTop, getContext().getResources().getDisplayMetrics());
-            layoutParams.bottomMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mTitleView.marginBottom, getContext().getResources().getDisplayMetrics());
-            layoutParams.leftMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mTitleView.marginLeft, getContext().getResources().getDisplayMetrics());
-            layoutParams.rightMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mTitleView.marginRight, getContext().getResources().getDisplayMetrics());
+            layoutParams.topMargin = OsUtil.dpToPx(mTitleView.marginTop);
+            layoutParams.bottomMargin = OsUtil.dpToPx(mTitleView.marginBottom);
+            layoutParams.leftMargin = OsUtil.dpToPx(mTitleView.marginLeft);
+            layoutParams.rightMargin = OsUtil.dpToPx(mTitleView.marginRight);
             mContainer.addView(mTitleView, layoutParams);
         }
     }
@@ -401,13 +447,21 @@ public class ScrollerPager extends ViewPager {
     public boolean onTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                // 如果点击
+                performClick();
                 stopAdvertPlay();
                 break;
             case MotionEvent.ACTION_UP:
                 startAdvertPlay();
                 break;
+            default:
+                break;
         }
         return super.onTouchEvent(ev);
     }
 
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
 }

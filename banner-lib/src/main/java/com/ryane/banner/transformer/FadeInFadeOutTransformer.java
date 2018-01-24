@@ -4,9 +4,9 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 /**
- * Creator: lijianchang
+ * 淡入淡出
  * Create Time: 2017/7/1.
- * Email: lijianchang@yy.com
+ * @author RyanLee
  */
 
 public class FadeInFadeOutTransformer implements ViewPager.PageTransformer {

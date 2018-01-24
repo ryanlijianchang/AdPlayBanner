@@ -5,14 +5,15 @@ import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
 /**
- * Creator: lijianchang
  * Create Time: 2017/6/19.
- * Email: lijianchang@yy.com
+ * @author RyanLee
  */
 
 public class AutoPlayScroller extends Scroller {
 
-    // 自动切换动画时长
+    /**
+     * 自动切换动画时长
+      */
     private int animTime = 400;
 
     public AutoPlayScroller(Context context, Interpolator interpolator) {

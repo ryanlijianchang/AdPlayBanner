@@ -15,14 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Creator: lijianchang
  * Create Time: 2017/6/17.
- * Email: lijianchang@yy.com
+ * @author RyanLee
  */
 
 public class AdPlayBanner extends RelativeLayout {
-    private List<AdPageInfo> mInfos;
+    /**
+     * 数据源
+     */
+    private List<AdPageInfo> mDataList;
+    /**
+     * 滑动的ViewPager
+     */
     private ScrollerPager mScrollerPager;
+    /**
+     * 标题控件
+     */
     private TitleView mTitleView;
 
     public AdPlayBanner(Context context) {
@@ -35,16 +43,17 @@ public class AdPlayBanner extends RelativeLayout {
 
     public AdPlayBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
     }
 
     /**
      * 初始化标题视图
+     * @param mTitleView    标题的View
+     * @return this
      */
     public AdPlayBanner addTitleView(TitleView mTitleView) {
         this.mTitleView = mTitleView;
         if (mScrollerPager != null) {
-            mScrollerPager.setmTitleView(mTitleView);
+            mScrollerPager.setTitleView(mTitleView);
         }
         return this;
     }
@@ -57,8 +66,8 @@ public class AdPlayBanner extends RelativeLayout {
     /**
      * 设置指示器类型
      *
-     * @param type
-     * @return
+     * @param type  指示器类型
+     * @return this
      */
     public AdPlayBanner setIndicatorType(IndicatorType type) {
         IndicatorManager.getInstance().setIndicatorType(type);
@@ -67,21 +76,22 @@ public class AdPlayBanner extends RelativeLayout {
 
     /**
      * 设置数据源
-     *
-     * @param pageInfos
+     * @param dataList 数据源
+     * @return this
      */
-    public AdPlayBanner setInfoList(ArrayList<AdPageInfo> pageInfos) {
-        if (null != pageInfos)
-            this.mInfos = QuickSort.quickSort(pageInfos, 0, pageInfos.size() - 1);
-        else
-            this.mInfos = new ArrayList<>();
+    public AdPlayBanner setInfoList(List<AdPageInfo> dataList) {
+        if (null != dataList) {
+            this.mDataList = QuickSort.quickSort(dataList, 0, dataList.size() - 1);
+        } else {
+            this.mDataList = new ArrayList<>();
+        }
         return this;
     }
 
     /**
      * 设置自动滑动间隔时间
-     *
-     * @param interval
+     * @param interval 间隔时间
+     * @return this
      */
     public AdPlayBanner setInterval(int interval) {
         ScrollerPager.mInterval = interval;
@@ -90,8 +100,8 @@ public class AdPlayBanner extends RelativeLayout {
 
     /**
      * 设置图片加载方式
-     *
-     * @param type
+     * @param type 加载方式
+     * @return this
      */
     public AdPlayBanner setImageLoadType(ImageLoaderType type) {
         ImageLoaderManager.getInstance().setImageLoaderType(type);
@@ -101,18 +111,17 @@ public class AdPlayBanner extends RelativeLayout {
     /**
      * 设置切换动画
      * 如果不设置动画，设置为null
-     *
-     * @param transformer
+     * @param transformer 切换动画
+     * @return this
      */
-    public AdPlayBanner setPageTransfromer(ViewPager.PageTransformer transformer) {
+    public AdPlayBanner setPageTransformer(ViewPager.PageTransformer transformer) {
         if (mScrollerPager != null) {
             mScrollerPager.setPageTransformer(true, transformer);
         } else {
-            mScrollerPager.mTransformer = transformer;
+            ScrollerPager.mTransformer = transformer;
         }
         return this;
     }
-
 
     /**
      * 设置数字页码的颜色
@@ -120,6 +129,7 @@ public class AdPlayBanner extends RelativeLayout {
      * @param normalColor   数字正常背景颜色
      * @param selectedColor 数字选中背景颜色
      * @param numberColor   数字字体颜色
+     * @return  this
      */
     public AdPlayBanner setNumberViewColor(int normalColor, int selectedColor, int numberColor) {
         if (mScrollerPager != null) {
@@ -134,32 +144,29 @@ public class AdPlayBanner extends RelativeLayout {
 
     /**
      * 设置事件点击监听器
-     *
-     * @param l
-     * @return
+     * @param listener 点击监听器
+     * @return this
      */
-    public AdPlayBanner setOnPageClickListener(OnPageClickListener l) {
-        ImageLoaderManager.getInstance().setmOnPageClickListener(l);
+    public AdPlayBanner setOnPageClickListener(OnPageClickListener listener) {
+        ImageLoaderManager.getInstance().setOnPageClickListener(listener);
         return this;
     }
 
     /**
      * 设置图片显示方式
-     *
-     * @param scaleType
-     * @return
+     * @param scaleType 图片显示方式
+     * @return this
      */
     public AdPlayBanner setImageViewScaleType(ScaleType scaleType) {
-        ImageLoaderManager.getInstance().setmScaleType(scaleType);
+        ImageLoaderManager.getInstance().setScaleType(scaleType);
         return this;
     }
 
     /**
      * 设置是否自动播放
      * 默认为true 自动播放
-     *
-     * @param autoPlay
-     * @return
+     * @param autoPlay 自动播放
+     * @return this
      */
     public AdPlayBanner setAutoPlay(boolean autoPlay) {
         ScrollerPager.mAutoPlay = autoPlay;
@@ -170,21 +177,35 @@ public class AdPlayBanner extends RelativeLayout {
      * 装载AdPlayBanner
      */
     public void setUp() {
-        mScrollerPager = new ScrollerPager(this, mTitleView, mInfos);
+        mScrollerPager = new ScrollerPager(this, mTitleView, mDataList);
         mScrollerPager.show();
     }
 
+    /**
+     * 停止播放
+     */
     public void stop() {
-        if (mScrollerPager == null)
+        if (mScrollerPager == null) {
             return;
+        }
         mScrollerPager.stop();
+        // 清除所有的子view
+        removeAllViews();
     }
 
     public interface OnPageClickListener {
-        void onPageClick(AdPageInfo info, int postion);
+        /**
+         * 页面点击
+         * @param info    数据
+         * @param position 位置
+         */
+        void onPageClick(AdPageInfo info, int position);
     }
 
 
+    /**
+     * 图片的ScaleType
+     */
     public enum ScaleType {
         FIT_XY(1),
         FIT_START(2),
@@ -201,6 +222,9 @@ public class AdPlayBanner extends RelativeLayout {
         final int nativeInt;
     }
 
+    /**
+     * 图片加载方式
+     */
     public enum ImageLoaderType {
         FRESCO(1),
         GLIDE(2),
@@ -213,9 +237,21 @@ public class AdPlayBanner extends RelativeLayout {
         final int nativeInt;
     }
 
+    /**
+     * 指示器类型
+     */
     public enum IndicatorType {
+        /**
+         * 空型页码指示器
+         */
         NONE_INDICATOR(0),
+        /**
+         * 数字页码指示器
+         */
         NUMBER_INDICATOR(1),
+        /**
+         * 点型页码指示器
+         */
         POINT_INDICATOR(2);
 
         IndicatorType(int ni) {

@@ -6,45 +6,52 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ryane.banner.loader.ImageLoaderManager;
+import com.ryane.banner.util.ListUtils;
 
 import java.util.List;
 
 /**
- * Creator: lijianchang
  * Create Time: 2017/6/17.
- * Email: lijianchang@yy.com
+ *
+ * @author RyanLee
  */
 
-public class ScrollerPagerAdapter extends PagerAdapter {
+class ScrollerPagerAdapter extends PagerAdapter {
+    /**
+     * 上下文
+     */
     private Context mContext;
-    private List<AdPageInfo> mInfos;
+    /**
+     * 数据源
+     */
+    private List<AdPageInfo> mDataList;
 
 
-    public ScrollerPagerAdapter(Context context, List<AdPageInfo> infos) {
+    ScrollerPagerAdapter(Context context, List<AdPageInfo> mDataList) {
         this.mContext = context;
-        this.mInfos = infos;
+        this.mDataList = mDataList;
     }
 
 
     @Override
     public int getCount() {
-        if (null != mInfos)
+        if (!ListUtils.isEmpty(mDataList)) {
             // 当只有一张图片的时候，不可滑动
-            if (mInfos.size() == 1) {
+            if (mDataList.size() == 1) {
                 return 1;
             } else {
                 // 否则循环播放滑动
                 return Integer.MAX_VALUE;
             }
-        else
+        } else {
             return 0;
+        }
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        if (mInfos != null && mInfos.size() > 0) {
-            final Object obj = ImageLoaderManager.getInstance().initPageView(container, mContext, mInfos.get(position % mInfos.size()), position % mInfos.size());
-            return obj;
+        if (!ListUtils.isEmpty(mDataList)) {
+            return ImageLoaderManager.getInstance().initPageView(container, mContext, mDataList.get(position % mDataList.size()), position % mDataList.size());
         } else {
             return null;
         }

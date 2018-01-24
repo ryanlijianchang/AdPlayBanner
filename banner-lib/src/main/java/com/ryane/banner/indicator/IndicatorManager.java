@@ -5,9 +5,8 @@ import com.ryane.banner.AdPlayBanner;
 import static com.ryane.banner.AdPlayBanner.IndicatorType.NONE_INDICATOR;
 
 /**
- * Creator: lijianchang
  * Create Time: 2017/7/1.
- * Email: lijianchang@yy.com
+ * @author RyanLee
  */
 
 public class IndicatorManager {
@@ -20,7 +19,7 @@ public class IndicatorManager {
     private IndicatorManager() {
     }
 
-    public static final IndicatorManager getInstance() {
+    public static IndicatorManager getInstance() {
         return IndicatorManager.SingletonHolder.INSTANCE;
     }
 
