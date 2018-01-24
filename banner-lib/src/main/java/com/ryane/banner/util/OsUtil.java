@@ -3,8 +3,9 @@ package com.ryane.banner.util;
 import android.content.res.Resources;
 
 /**
+ * Create Time: 2018/1/24
+ *
  * @author RyanLee
- * @date 2018/1/24
  */
 
 public class OsUtil {
