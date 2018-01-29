@@ -317,6 +317,7 @@ setImageViewScaleType(ScaleType scaleType) | 设置图片的ScaleType | 传入`F
 setAutoPlay(boolean autoPlay) | 设置是否自动播放 | 默认为true 自动播放，传入false为手动
 setCanScroll(boolean canScroll) | 设置是否可以手动滑动 | 默认为true可以，传入false为不可以
 setInfoList(ArrayList<AdPageInfo> pageInfos) | 设置Banner的数据源 | 传入必须为AdPageInfo类型的ArrayList
+setOnPagerChangeListener(OnPagerChangeListener listener) | 设置滑动监听器 | 监听滑动状态
 setUp() | 装载AdPlayBanner | 必须在以上所有方法调用完之后才能调用
 stop()  | 结束AdPlayBanner | 在离开显示AdPlayBanner页面时调用，避免内存泄漏
 
@@ -347,6 +348,9 @@ void setOrder(int order) | 设置排序的优先级 | 设置了order，AdPlayBan
 int getOrder() | 获取排序优先级 |
 
 ## 四、版本特性 ##
+
+### V0.6 ###
+1. 增加`setOnPagerChangeListener(OnPagerChangeListener listener)`接口，监听当前位置。
 
 ### V0.5 ###
 
