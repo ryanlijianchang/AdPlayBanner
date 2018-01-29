@@ -33,6 +33,8 @@ public class AdPlayBanner extends RelativeLayout {
      */
     private TitleView mTitleView;
 
+    private OnPagerChangeListener mPageChangeListener = null;
+
     public AdPlayBanner(Context context) {
         this(context, null);
     }
@@ -153,6 +155,20 @@ public class AdPlayBanner extends RelativeLayout {
     }
 
     /**
+     * 设置滑动监听
+     * @param listener 滑动监听器
+     * @return this
+     */
+    public AdPlayBanner setOnPagerChangeListener(OnPagerChangeListener listener) {
+        if (mScrollerPager != null) {
+            mScrollerPager.setmPageListener(listener);
+        } else {
+            mPageChangeListener = listener;
+        }
+        return this;
+    }
+
+    /**
      * 设置图片显示方式
      * @param scaleType 图片显示方式
      * @return this
@@ -188,6 +204,9 @@ public class AdPlayBanner extends RelativeLayout {
      */
     public void setUp() {
         mScrollerPager = new ScrollerPager(this, mTitleView, mDataList);
+        if (mPageChangeListener != null) {
+            mScrollerPager.setmPageListener(mPageChangeListener);
+        }
         mScrollerPager.show();
     }
 
@@ -210,6 +229,12 @@ public class AdPlayBanner extends RelativeLayout {
          * @param position 位置
          */
         void onPageClick(AdPageInfo info, int position);
+    }
+
+    public interface OnPagerChangeListener {
+        void onPageSelected(final int position);
+        void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
+        void onPageScrollStateChanged(int state);
     }
 
 

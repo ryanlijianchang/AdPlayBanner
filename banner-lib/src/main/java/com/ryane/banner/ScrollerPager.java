@@ -95,6 +95,10 @@ public class ScrollerPager extends ViewPager {
      * 当前下标
      */
     private int mSelectedIndex = 0;
+    /**
+     * 滑动监听
+     */
+    private AdPlayBanner.OnPagerChangeListener mPageListener;
 
     public ScrollerPager(Context context) {
         this(context, null);
@@ -255,6 +259,10 @@ public class ScrollerPager extends ViewPager {
 
         @Override
         public void onPageSelected(final int position) {
+            if (mPageListener != null) {
+                int pos = (mDataList == null || mDataList.size() == 0) ? 0 : position % mDataList.size();
+                mPageListener.onPageSelected(pos);
+            }
             if (ListUtils.isEmpty(mDataList)) {
                 return;
             }
@@ -286,10 +294,17 @@ public class ScrollerPager extends ViewPager {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            if (mPageListener != null) {
+                int pos = (mDataList == null || mDataList.size() == 0) ? 0 : position % mDataList.size();
+                mPageListener.onPageScrolled(pos, positionOffset, positionOffsetPixels);
+            }
         }
 
         @Override
         public void onPageScrollStateChanged(int state) {
+            if (mPageListener != null) {
+                mPageListener.onPageScrollStateChanged(state);
+            }
             if (state == ViewPager.SCROLL_STATE_IDLE) {
                 startAdvertPlay();
             }
@@ -475,5 +490,9 @@ public class ScrollerPager extends ViewPager {
     @Override
     public boolean performClick() {
         return super.performClick();
+    }
+
+    public void setmPageListener(AdPlayBanner.OnPagerChangeListener mPageListener) {
+        this.mPageListener = mPageListener;
     }
 }

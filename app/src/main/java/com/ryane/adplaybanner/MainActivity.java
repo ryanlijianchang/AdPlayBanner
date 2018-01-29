@@ -30,15 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
         List<AdPageInfo> dataTest = new ArrayList<>();
         AdPageInfo info1 = new AdPageInfo("拜仁球场冠绝全球", "http://onq81n53u.bkt.clouddn.com/photo1.jpg", "http://www.bairen.com", 1);
-        AdPageInfo info2 = new AdPageInfo("日落东单一起战斗", "http://onq81n53u.bkt.clouddn.com/photo2.jpg", "http://www.riluodongdan.com", 4);
-        AdPageInfo info3 = new AdPageInfo("香港夜景流连忘返", "http://onq81n53u.bkt.clouddn.com/photo3333.jpg", "http://www.hongkong.com", 2);
-        AdPageInfo info4 = new AdPageInfo("耐克大法绝顶天下", "http://7xrwkh.com1.z0.glb.clouddn.com/1.jpg", "http://www.nike.com", 5);
-
+        AdPageInfo info2 = new AdPageInfo("日落东单一起战斗", "http://onq81n53u.bkt.clouddn.com/photo2.jpg", "http://www.riluodongdan.com", 1);
+        AdPageInfo info3 = new AdPageInfo("香港夜景流连忘返", "http://onq81n53u.bkt.clouddn.com/photo3333.jpg", "http://www.hongkong.com", 1);
+        AdPageInfo info4 = new AdPageInfo("耐克大法绝顶天下", "http://7xrwkh.com1.z0.glb.clouddn.com/1.jpg", "http://www.nike.com", 1);
         dataTest.add(info1);
         dataTest.add(info2);
         dataTest.add(info3);
         dataTest.add(info4);
-
         mAdPlayBanner = findViewById(R.id.game_banner);
 
 
@@ -61,7 +59,23 @@ public class MainActivity extends AppCompatActivity {
                 .setPageTransformer(new RotateDownTransformer())
                 .setInfoList(dataTest)
                 // 设置不可以手动滑动
-                .setCanScroll(false)
+                .setCanScroll(true)
+                .setOnPagerChangeListener(new AdPlayBanner.OnPagerChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        Toast.makeText(getApplicationContext(), "position=" + position, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                })
                 .setUp();
     }
 
