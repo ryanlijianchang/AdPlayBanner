@@ -17,7 +17,7 @@
 如果使用bintray依赖，直接在模块目录下的`build.gradle`文件添加依赖：
 
 	dependencies {
-		  compile 'com.ryane.banner:banner-lib:0.5'
+		  compile 'com.ryane.banner:banner-lib:0.6'
 	}
 
 #### jitpack依赖 ####
@@ -37,7 +37,7 @@
 然后，在模块目录下的`build.gradle`文件添加依赖：
 
     dependencies {
-		  compile 'com.github.ryanlijianchang:AdPlayBanner:v0.5'
+		  compile 'com.github.ryanlijianchang:AdPlayBanner:v0.6'
 	}
 
 ### 2.在布局文件中添加控件 ###
