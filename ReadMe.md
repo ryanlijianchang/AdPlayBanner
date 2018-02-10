@@ -17,7 +17,7 @@
 如果使用bintray依赖，直接在模块目录下的`build.gradle`文件添加依赖：
 
 	dependencies {
-		  compile 'com.ryane.banner:banner-lib:0.6'
+		  compile 'com.ryane.banner:banner-lib:0.7'
 	}
 
 #### jitpack依赖 ####
@@ -37,7 +37,7 @@
 然后，在模块目录下的`build.gradle`文件添加依赖：
 
     dependencies {
-		  compile 'com.github.ryanlijianchang:AdPlayBanner:v0.6'
+		  compile 'com.github.ryanlijianchang:AdPlayBanner:v0.7'
 	}
 
 ### 2.在布局文件中添加控件 ###
@@ -348,6 +348,10 @@ void setOrder(int order) | 设置排序的优先级 | 设置了order，AdPlayBan
 int getOrder() | 获取排序优先级 |
 
 ## 四、版本特性 ##
+
+### V0.7 ###
+1. 支持最低API版本是14（即Android4.0）。
+2. 代码优化。
 
 ### V0.6 ###
 1. 增加`setOnPagerChangeListener(OnPagerChangeListener listener)`接口，监听当前位置。

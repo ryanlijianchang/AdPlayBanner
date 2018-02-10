@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 .setOnPagerChangeListener(new AdPlayBanner.OnPagerChangeListener() {
                     @Override
                     public void onPageSelected(int position) {
-                        Toast.makeText(getApplicationContext(), "position=" + position, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
